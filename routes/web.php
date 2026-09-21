@@ -7,6 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// START OF LARAVEL BREEZE
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -18,3 +19,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+// END OF LARAVEL BREEZE
