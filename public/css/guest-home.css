@@ -1,3 +1,4 @@
+/* Sets up the main colors used across the site */
 :root {
     --ink: #06131e;
     --deep-green: #073d28;
@@ -8,10 +9,15 @@
     --white: #ffffff;
 }
 
+/* Makes sure borders and padding don't mess up element sizes */
 * { box-sizing: border-box; }
 
+/* Sets the default font, background color, and text color for the whole page */
 body { margin: 0; background: var(--surface); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+
+/* Removes underlines from links */
 a { color: inherit; text-decoration: none; }
+
 .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
 .site-header { background: var(--ink); border-bottom: 1px solid #22313a; }
 .navigation, .footer-content, .student-content, .section-heading-row { display: flex; align-items: center; justify-content: space-between; }
@@ -27,12 +33,20 @@ a { color: inherit; text-decoration: none; }
 .hero { min-height: 460px; padding: 100px 0; background: linear-gradient(115deg, rgba(3, 45, 28, 0.97), rgba(5, 27, 20, 0.86)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1800&q=85') center / cover; color: var(--white); }
 .hero-content { max-width: 660px; }
 .eyebrow { margin: 0 0 12px; color: var(--green); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Removes extra space at the top of headings and paragraphs */
 h1, h2, h3, p { margin-top: 0; }
+
+/* Makes the main title big and responsive to screen size */
 h1 { margin-bottom: 18px; font-size: clamp(42px, 6vw, 68px); line-height: 1.05; letter-spacing: 0; }
+
+/* Makes specific words inside the main title green */
 h1 span { color: var(--green); }
 .hero-copy { max-width: 560px; margin-bottom: 30px; color: #d8e9de; font-size: 17px; line-height: 1.65; }
 .how-it-works, .featured-meals { padding: 84px 0; }
 .section-heading { margin-bottom: 34px; }
+
+/* Sets the size for section titles */
 h2 { margin-bottom: 0; font-size: 34px; line-height: 1.2; }
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .step { padding: 28px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); }
@@ -61,6 +75,7 @@ h2 { margin-bottom: 0; font-size: 34px; line-height: 1.2; }
 .site-footer { padding: 26px 0; background: var(--ink); }
 .site-footer p { margin: 0; color: #9aaca2; font-size: 13px; }
 
+/* Mobile view */
 @media (max-width: 760px) {
     .container { width: min(100% - 32px, 1120px); }
     .hero { min-height: 420px; padding: 76px 0; }

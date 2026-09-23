@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// Welcome page (for guest)
 Route::get('/', function () {
     return view('welcome');
 });

@@ -1,32 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>RescueBite | Good Food, Less Waste</title>
-    <link rel="stylesheet" href="{{ asset('css/guest-home.css') }}">
-</head>
-<body>
-    <header class="site-header">
-        <div class="container navigation">
-            <a class="brand" href="{{ url('/') }}" aria-label="RescueBite home">
-                <span class="brand-mark" aria-hidden="true">R</span>
-                <span>Rescue<span>Bite</span></span>
-            </a>
+@extends('layouts.public')
 
-            <nav class="nav-actions" aria-label="Account navigation">
-                @if (Route::has('login'))
-                    <a class="login-link" href="{{ route('login') }}">Log in</a>
-                @endif
+@section('title', 'RescueBite | Good Food, Less Waste')
 
-                @if (Route::has('register'))
-                    <a class="button button-small" href="{{ route('register') }}">Sign up</a>
-                @endif
-            </nav>
-        </div>
-    </header>
-
-    <main>
+@section('content')
         <section class="hero">
             <div class="container hero-content">
                 <p class="eyebrow">Every meal deserves a second chance</p>
@@ -113,23 +89,11 @@
         <section class="student-banner" aria-labelledby="student-title">
             <div class="container student-content">
                 <div>
-                    <p class="eyebrow">Campus community</p>
-                    <h2 id="student-title">Students can do more with less.</h2>
-                    <p>Register with your university email to access student-focused meals and future campus perks.</p>
+                    <p class="eyebrow">UNITEN community</p>
+                    <h2 id="student-title">Uniten Students can do more with less.</h2>
+                    <p>Register to access student-focused meals and future campus perks.</p>
                 </div>
                 <a class="button button-light" href="{{ route('register') }}">Join RescueBite</a>
             </div>
         </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="container footer-content">
-            <a class="brand" href="{{ url('/') }}">
-                <span class="brand-mark" aria-hidden="true">R</span>
-                <span>Rescue<span>Bite</span></span>
-            </a>
-            <p>Making surplus food matter.</p>
-        </div>
-    </footer>
-</body>
-</html>
+@endsection
