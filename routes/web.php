@@ -13,6 +13,10 @@ Route::get('/dashboard', function () {
     return view('consumer.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/my-rescues', function () {
+    return view('consumer.rescues');
+})->middleware(['auth', 'verified'])->name('consumer.rescues');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

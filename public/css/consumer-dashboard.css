@@ -1,43 +1,411 @@
 /* CSS for consumer.blade & dashboard */
 
-.consumer-page { min-height: 100vh; background: #f4f7f5; }
-.consumer-header { background: #06131e; }
-.consumer-navigation, .consumer-actions, .listing-toolbar, .filter-list, .category-list, .food-details, .consumer-price { display: flex; align-items: center; }
-.consumer-navigation { min-height: 72px; justify-content: space-between; }
-.consumer-actions { gap: 14px; }
-.consumer-greeting { color: #18c964; font-size: 14px; font-weight: 700; }
-.consumer-nav-button, .filter-button, .category-button { border: 0; cursor: pointer; font-size: 13px; font-weight: 700; }
-.consumer-nav-button { min-height: 34px; padding: 0 15px; border-radius: 17px; background: #44504e; color: #ffffff; }
-.consumer-nav-button:hover { background: #63716d; }
-.consumer-hero { padding: 64px 0; background-color: #073d28; background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1800&q=85'); background-position: center; background-size: cover; background-blend-mode: multiply; color: #ffffff; }
-.consumer-hero-content { text-align: center; }
-.consumer-hero h1 { margin-bottom: 12px; font-size: clamp(36px, 5vw, 52px); }
-.consumer-hero p:last-child { max-width: 550px; margin: 0 auto; color: #d5e9dc; font-size: 16px; line-height: 1.6; }
-.vendor-filter { padding: 15px 0; background: #202827; }
-.filter-list, .category-list { justify-content: center; gap: 14px; flex-wrap: wrap; }
-.filter-button, .category-button { min-width: 84px; padding: 8px 14px; border-radius: 15px; background: #48504f; color: #ffffff; }
-.filter-button-active, .category-button-active { background: #168b46; }
-.consumer-listings { padding: 62px 0 80px; }
-.listing-toolbar { justify-content: space-between; gap: 24px; margin-bottom: 22px; }
-.listing-toolbar h2 { font-size: 32px; }
-.listing-search input { width: 280px; min-height: 42px; padding: 0 14px; border: 1px solid #b9c8c0; border-radius: 6px; background: #ffffff; font-size: 14px; }
-.category-list { justify-content: flex-start; margin-bottom: 30px; }
-.category-button { min-width: 74px; background: #39433f; }
-.consumer-food-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.consumer-food-card { overflow: hidden; border: 1px solid #d8e1dc; border-radius: 8px; background: #ffffff; }
-.consumer-food-card img { width: 100%; height: 155px; object-fit: cover; }
-.consumer-food-content { padding: 17px; }
-.food-vendor { margin-bottom: 7px; color: #08763b; font-size: 12px; font-weight: 700; }
-.consumer-food-card h3 { margin-bottom: 5px; font-size: 18px; }
-.food-location { margin-bottom: 18px; color: #64716b; font-size: 13px; }
-.food-details, .consumer-price { justify-content: space-between; gap: 8px; color: #64716b; font-size: 12px; }
-.food-details { margin-bottom: 13px; }
-.consumer-price { margin-bottom: 16px; }
-.consumer-price strong { color: #079447; font-size: 19px; }
-.consumer-price span { color: #88928d; text-decoration: line-through; }
-.consumer-reserve-button { display: flex; width: 100%; min-height: 38px; font-size: 13px; }
-.dashboard-note { margin: 28px 0 0; color: #64716b; font-size: 13px; text-align: center; }
-.screen-reader-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.consumer-page {
+    min-height: 100vh;
+    background: #f4f7f5;
+}
 
-@media (max-width: 980px) { .consumer-food-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .consumer-navigation { align-items: flex-start; flex-direction: column; justify-content: center; gap: 12px; padding: 15px 0; } .consumer-actions { width: 100%; justify-content: space-between; } .listing-toolbar { align-items: flex-start; flex-direction: column; } .listing-search, .listing-search input { width: 100%; } .consumer-food-grid { grid-template-columns: 1fr; } }
+.consumer-header {
+    background: #06131e;
+}
+
+.consumer-navigation,
+.consumer-actions,
+.listing-toolbar,
+.filter-list,
+.category-list,
+.food-details,
+.consumer-price {
+    display: flex;
+    align-items: center;
+}
+
+.consumer-navigation {
+    min-height: 72px;
+    justify-content: space-between;
+}
+
+.consumer-actions {
+    gap: 14px;
+}
+
+.consumer-greeting {
+    color: #18c964;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Shared styling - apply these 4 styling below (border, cursor, etc) to all these 3 button */
+.consumer-nav-button,
+.filter-button,
+.category-button {
+    border: 0;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.consumer-nav-button {
+    display: inline-flex;      /* Makes the button a flex container */
+    align-items: center;       /* Centers the text vertically */
+    justify-content: center;   /* Centers the text horizontally */
+    text-decoration: none;     /* Removes any default link underlines */    /* these 4 changes is to mitigate the misalignment issue */
+    min-height: 34px;
+    padding: 0 15px;
+    border-radius: 17px;
+    background: #44504e;
+    color: #ffffff;
+}
+
+.consumer-nav-button:hover {
+    background: #63716d;
+}
+
+.consumer-hero {
+    padding: 64px 0;
+    background-color: #073d28;
+    background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1800&q=85');
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: multiply;
+    color: #ffffff;
+}
+
+.consumer-hero-content {
+    text-align: center;
+}
+
+.consumer-hero h1 {
+    margin-bottom: 12px;
+    font-size: clamp(36px, 5vw, 52px);
+}
+
+.consumer-hero p:last-child {
+    max-width: 550px;
+    margin: 0 auto;
+    color: #d5e9dc;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.vendor-filter {
+    padding: 15px 0;
+    background: #202827;
+}
+
+.filter-list,
+.category-list {
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.filter-button,
+.category-button {
+    min-width: 84px;
+    padding: 8px 14px;
+    border-radius: 15px;
+    background: #48504f;
+    color: #ffffff;
+}
+
+.filter-button-active,
+.category-button-active {
+    background: #168b46;
+}
+
+.consumer-listings {
+    padding: 62px 0 80px;
+}
+
+.listing-toolbar {
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 22px;
+}
+
+.listing-toolbar h2 {
+    font-size: 32px;
+}
+
+.listing-search input {
+    width: 280px;
+    min-height: 42px;
+    padding: 0 14px;
+    border: 1px solid #b9c8c0;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+.category-list {
+    justify-content: flex-start;
+    margin-bottom: 30px;
+}
+
+.category-button {
+    min-width: 74px;
+    background: #39433f;
+}
+
+.consumer-food-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.consumer-food-card {
+    overflow: hidden;
+    border: 1px solid #d8e1dc;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.consumer-food-card img {
+    width: 100%;
+    height: 155px;
+    object-fit: cover;
+}
+
+.consumer-food-content {
+    padding: 17px;
+}
+
+.food-vendor {
+    margin-bottom: 7px;
+    color: #08763b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.consumer-food-card h3 {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.food-location {
+    margin-bottom: 18px;
+    color: #64716b;
+    font-size: 13px;
+}
+
+.food-details,
+.consumer-price {
+    justify-content: space-between;
+    gap: 8px;
+    color: #64716b;
+    font-size: 12px;
+}
+
+.food-details {
+    margin-bottom: 13px;
+}
+
+.consumer-price {
+    margin-bottom: 16px;
+}
+
+.consumer-price strong {
+    color: #079447;
+    font-size: 19px;
+}
+
+.consumer-price span {
+    color: #88928d;
+    text-decoration: line-through;
+}
+
+.consumer-reserve-button {
+    display: flex;
+    width: 100%;
+    min-height: 38px;
+    font-size: 13px;
+}
+
+.dashboard-note {
+    margin: 28px 0 0;
+    color: #64716b;
+    font-size: 13px;
+    text-align: center;
+}
+
+.screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.rescues-banner {
+    padding: 54px 0;
+    background: #073d28;
+    color: #ffffff;
+}
+
+.rescues-banner h1 {
+    margin-bottom: 10px;
+    font-size: 42px;
+}
+
+.rescues-banner p:last-child {
+    margin: 0;
+    color: #c9e2d1;
+    font-size: 16px;
+}
+
+.rescues-content {
+    padding: 58px 0 80px;
+}
+
+.rescue-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.rescue-section-heading h2 {
+    font-size: 28px;
+}
+
+.rescue-count,
+.rescue-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 11px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.rescue-count {
+    background: #dff8e8;
+    color: #08763b;
+}
+
+.rescue-card {
+    display: grid;
+    grid-template-columns: 160px 1fr 190px;
+    align-items: stretch;
+    overflow: hidden;
+    border: 1px solid #d8e1dc;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.rescue-card>img {
+    width: 100%;
+    height: 100%;
+    min-height: 170px;
+    object-fit: cover;
+}
+
+.rescue-card-details {
+    padding: 27px;
+}
+
+.rescue-card-details h3 {
+    margin-bottom: 5px;
+    font-size: 21px;
+}
+
+.rescue-pickup-time {
+    margin: 20px 0 0;
+    color: #24332c;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rescue-code-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    border-left: 1px solid #d8e1dc;
+    background: #f7faf8;
+    text-align: center;
+}
+
+.rescue-code-box p {
+    margin: 0;
+    color: #64716b;
+    font-size: 12px;
+}
+
+.rescue-code-box strong {
+    color: #08763b;
+    font-size: 20px;
+    letter-spacing: 0.06em;
+}
+
+.rescue-status-active {
+    background: #dff8e8;
+    color: #08763b;
+}
+
+.rescue-status-claimed {
+    background: #d8e7fc;
+    color: #175a9a;
+}
+
+.rescue-history-heading {
+    margin-top: 54px;
+}
+
+.rescue-card-history {
+    opacity: 0.82;
+}
+
+@media (max-width: 980px) {
+    .consumer-food-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .consumer-navigation {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        gap: 12px;
+        padding: 15px 0;
+    }
+
+    .consumer-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .listing-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .listing-search,
+    .listing-search input {
+        width: 100%;
+    }
+
+    .consumer-food-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rescue-card {
+        grid-template-columns: 1fr;
+    }
+
+    .rescue-card>img {
+        height: 190px;
+    }
+
+    .rescue-code-box {
+        border-top: 1px solid #d8e1dc;
+        border-left: 0;
+    }
+}

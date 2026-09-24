@@ -19,8 +19,9 @@
             </a>
 
             <nav class="consumer-actions" aria-label="Consumer navigation">
-                <span class="consumer-greeting">Hi, {{ auth()->user()->name }}</span>
-                <button class="consumer-nav-button" type="button">My Rescues</button>
+                {{-- "explode" divide " " (space) into seperate characters and [0] to only display the first divided char --}}
+                <span class="consumer-greeting">Hi, {{ explode(' ', auth()->user()->name)[0] }}</span>
+                <a class="consumer-nav-button" href="{{ route('consumer.rescues') }}">My Rescues</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button class="consumer-nav-button" type="submit">Logout</button>
