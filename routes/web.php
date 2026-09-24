@@ -1,27 +1,27 @@
 <?php
 
+use App\Http\Controllers\ConsumerController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Welcome page (for guest)
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 // LARAVEL BREEZE - Dashboard route (for authenticated users)
-Route::get('/dashboard', function () {
-    return view('consumer.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ConsumerController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Consumer routes - My Rescues section
-Route::get('/my-rescues', function () {
-    return view('consumer.rescues');
-})->middleware(['auth', 'verified'])->name('consumer.rescues');
+Route::get('/my-rescues', [ConsumerController::class, 'rescues'])
+    ->middleware(['auth', 'verified'])
+    ->name('consumer.rescues');
 
 // Consumer routes - My Rescues History section
-Route::get('/my-rescues/history', function () {
-    return view('consumer.rescues-history');
-})->middleware(['auth', 'verified'])->name('consumer.rescues.history');
+Route::get('/my-rescues/history', [ConsumerController::class, 'rescueHistory'])
+    ->middleware(['auth', 'verified'])
+    ->name('consumer.rescues.history');
 
 // LARAVEL BREEZE - Profile routes (for user account management)
 Route::middleware('auth')->group(function () {

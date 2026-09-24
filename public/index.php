@@ -1,5 +1,7 @@
 <?php
 
+// Laravel Breeze - public/index.php - entry point for all requests to the application
+
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
