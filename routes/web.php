@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 // START OF LARAVEL BREEZE
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('consumer.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

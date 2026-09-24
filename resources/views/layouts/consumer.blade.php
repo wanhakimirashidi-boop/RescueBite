@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> {{-- get Language and change the format to en-US --}}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Consumer Dashboard | RescueBite')</title>
+    <link rel="stylesheet" href="{{ asset('css/guest-home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/consumer-dashboard.css') }}">
+</head>
+<body class="consumer-page">
+    <header class="consumer-header">
+        <div class="container consumer-navigation">
+            <a class="brand" href="{{ route('dashboard') }}" aria-label="RescueBite dashboard">
+                <span class="brand-mark" aria-hidden="true">R</span>
+                <span>Rescue<span>Bite</span></span>
+            </a>
+
+            <nav class="consumer-actions" aria-label="Consumer navigation">
+                <span class="consumer-greeting">Hi, {{ auth()->user()->name }}</span>
+                <button class="consumer-nav-button" type="button">My Rescues</button>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="consumer-nav-button" type="submit">Logout</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+
+    @yield('content')
+</body>
+</html>
