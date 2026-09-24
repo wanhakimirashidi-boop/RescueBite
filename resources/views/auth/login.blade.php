@@ -1,6 +1,8 @@
 {{-- this file is placeholder contents for the MAIN auth.blade --}}
 @extends('layouts.auth') {{-- auth.blade.php - uses the shared authentication layout --}}
 
+{{-- @yield('title', 'RescueBite') in auth.blade = "define page title there. If a page doesn't have one, use 'RescueBite' as the default --}}
+{{-- @section('title', 'Log in | RescueBite') in login.blade = "Pass this exact text to auth.blade to fill the 'title' placeholder --}}
 @section('title', 'Log in | RescueBite')
 
 {{-- @yield on auth.blade = leave blank space right there && "@section('content')" paste it there--}}
