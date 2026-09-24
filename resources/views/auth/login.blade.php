@@ -1,47 +1,55 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+{{-- this file is placeholder contents for the MAIN auth.blade --}}
+@extends('layouts.auth') {{-- auth.blade.php - uses the shared authentication layout --}}
+
+@section('title', 'Log in | RescueBite')
+
+{{-- @yield on auth.blade = leave blank space right there && "@section('content')" paste it there--}}
+@section('content')
+    <h1 class="auth-heading">Welcome back</h1>
+    <p class="auth-introduction">Log in to discover affordable surplus food near you.</p>
+
+    <!-- Session Status : checks if Laravel sent a temporary status message (like "Password reset link sent!") -->
+    @if (session('status'))
+        <p class="auth-status">{{ session('status') }}</p>
+    @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="auth-field">
+            <label class="auth-label" for="email">Email address</label>
+            <input class="auth-input" id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username">
+            @if ($errors->has('email'))
+                <p class="auth-error">{{ $errors->first('email') }}</p>
+            @endif
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="auth-field">
+            <label class="auth-label" for="password">Password</label>
+            <input class="auth-input" id="password" type="password" name="password" required autocomplete="current-password">
+            @if ($errors->has('password'))
+                <p class="auth-error">{{ $errors->first('password') }}</p>
+            @endif
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+        <div class="auth-options">
+            <label for="remember_me" class="auth-checkbox-label">
+                <input id="remember_me" type="checkbox" class="auth-checkbox" name="remember">
+                <span>Remember me</span>
             </label>
+
+            @if (Route::has('password.request'))
+                <a class="auth-link" href="{{ route('password.request') }}">Forgot password?</a>
+            @endif
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <div class="auth-submit-row">
+            <button class="button auth-submit" type="submit">Log in</button>
         </div>
     </form>
-</x-guest-layout>
+
+    <p class="auth-register-message">New to RescueBite? <a class="auth-link" href="{{ route('register') }}">Create an account</a></p>
+@endsection

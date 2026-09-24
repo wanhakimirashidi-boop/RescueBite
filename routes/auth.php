@@ -17,9 +17,11 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+    // GET(create) = triggered when user TYPES the URL or clicks a link to visit the page. to display login.blade
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
+    // POST(store) = triggered when the user clicks the "Submit" or "Log in" button. And save the Processes Data from GET(create) login.blade above to the database
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])

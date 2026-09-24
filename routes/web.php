@@ -19,5 +19,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__.'/auth.php'; // routes\auth.php - shortcut to include all the authentication routes (login, register, logout, etc.) without writing all
 // END OF LARAVEL BREEZE

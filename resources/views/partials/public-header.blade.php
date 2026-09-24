@@ -1,4 +1,4 @@
-{{-- THIS IS FOR PUBLIC HEADER "@include" --}}
+{{-- SHARED TEMPLATE FOR PUBLIC HEADER "@include" --}}
 
 <header class="site-header">
     <div class="container navigation">

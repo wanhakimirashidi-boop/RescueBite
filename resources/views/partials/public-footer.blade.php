@@ -1,4 +1,4 @@
-{{-- THIS IS FOR PUBLIC FOOTER "@include" --}}
+{{-- SHARED TEMPLATE FOR PUBLIC FOOTER "@include" --}}
 
 <footer class="site-footer">
     <div class="container footer-content">

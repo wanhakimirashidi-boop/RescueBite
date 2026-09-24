@@ -1,3 +1,6 @@
+/* THIS IS FOR GUEST HOME PAGE CSS */
+
+
 /* Sets up the main colors used across the site */
 :root {
     --ink: #06131e;
@@ -40,13 +43,13 @@ h1, h2, h3, p { margin-top: 0; }
 /* Makes the main title big and responsive to screen size */
 h1 { margin-bottom: 18px; font-size: clamp(42px, 6vw, 68px); line-height: 1.05; letter-spacing: 0; }
 
-/* Makes specific words inside the main title green */
+/* Makes specific WORDS inside the main title green */
 h1 span { color: var(--green); }
 .hero-copy { max-width: 560px; margin-bottom: 30px; color: #d8e9de; font-size: 17px; line-height: 1.65; }
 .how-it-works, .featured-meals { padding: 84px 0; }
 .section-heading { margin-bottom: 34px; }
 
-/* Sets the size for section titles */
+/* Sets the size for TITLES section */
 h2 { margin-bottom: 0; font-size: 34px; line-height: 1.2; }
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .step { padding: 28px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); }

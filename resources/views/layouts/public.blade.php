@@ -1,4 +1,4 @@
-{{-- THIS IS FOR PUBLIC DOCTYPE for all pages : "@include" --}}
+{{-- SHARED TEMPLATE FOR PUBLIC DOCTYPE for all pages : "@include" --}}
 
 
 <!DOCTYPE html>
