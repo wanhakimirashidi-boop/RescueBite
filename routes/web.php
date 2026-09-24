@@ -3,12 +3,16 @@
 use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
-// Welcome page (for guest)
+// Guest routes - Home page
 Route::get('/', [HomeController::class, 'index']);
 
-// LARAVEL BREEZE - Dashboard route (for authenticated users)
+
+
+// LARAVEL BREEZE 
+// Consumer routes - Dashboard section
 Route::get('/dashboard', [ConsumerController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -22,6 +26,15 @@ Route::get('/my-rescues', [ConsumerController::class, 'rescues'])
 Route::get('/my-rescues/history', [ConsumerController::class, 'rescueHistory'])
     ->middleware(['auth', 'verified'])
     ->name('consumer.rescues.history');
+
+
+    
+// Vendor routes - Dashboard section
+Route::get('/vendor/dashboard', [VendorController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('vendor.dashboard');
+
+
 
 // LARAVEL BREEZE - Profile routes (for user account management)
 Route::middleware('auth')->group(function () {

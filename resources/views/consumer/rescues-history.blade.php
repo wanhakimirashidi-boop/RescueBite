@@ -1,4 +1,4 @@
-{{-- Route web.php for UI display here --}}
+{{-- Consumer Rescue History (RETURN VIEW) --}}
 
 {{-- Rescue History page --}}
 

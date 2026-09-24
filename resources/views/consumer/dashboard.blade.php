@@ -1,3 +1,5 @@
+{{-- Consumer Dashboard (RETURN VIEW) --}}
+
 {{-- Consumer Dashboard - Shared template with consumer.blade.php --}}
 
 @extends('layouts.consumer')

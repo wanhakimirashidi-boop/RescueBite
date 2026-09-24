@@ -1,4 +1,4 @@
-{{-- Route web.php for UI display here --}}
+{{-- Consumer Active Rescues (RETURN VIEW) --}}
 
 {{-- Active Rescues page--}}
 
