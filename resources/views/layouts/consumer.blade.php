@@ -30,6 +30,6 @@
         </div>
     </header>
 
-    @yield('content') {{-- @yield = leave blank space right here && dashboard.blade "@section('content')" paste it there--}}
+    @yield('content') {{-- @section('content') in dashboard.blade.php will be pasted here --}}
 </body>
 </html>

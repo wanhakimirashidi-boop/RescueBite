@@ -409,3 +409,66 @@
         border-left: 0;
     }
 }
+
+.rescue-list-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.rescue-list-toolbar h2 {
+    font-size: 28px;
+}
+
+.rescue-list {
+    display: grid;
+    gap: 18px;
+}
+
+.rescue-search input {
+    width: 280px;
+    min-height: 42px;
+    padding: 0 14px;
+    border: 1px solid #b9c8c0;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+.rescue-list-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #d8e1dc;
+}
+
+.rescue-list-tab {
+    padding: 10px 14px;
+    border-bottom: 3px solid transparent;
+    color: #64716b;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rescue-list-tab:hover {
+    color: #08763b;
+}
+
+.rescue-list-tab-active {
+    border-bottom-color: #18c964;
+    color: #08763b;
+}
+
+@media (max-width: 640px) {
+    .rescue-list-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .rescue-search,
+    .rescue-search input {
+        width: 100%;
+    }
+}
