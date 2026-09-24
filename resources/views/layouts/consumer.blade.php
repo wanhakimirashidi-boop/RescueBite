@@ -1,3 +1,5 @@
+{{-- Consumer Layout - Shared template with dashboard.blade.php --}}
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> {{-- get Language and change the format to en-US --}}
 <head>
@@ -27,6 +29,6 @@
         </div>
     </header>
 
-    @yield('content')
+    @yield('content') {{-- @yield = leave blank space right here && dashboard.blade "@section('content')" paste it there--}}
 </body>
 </html>

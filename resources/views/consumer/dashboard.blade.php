@@ -1,8 +1,10 @@
+{{-- Consumer Dashboard - Shared template with consumer.blade.php --}}
+
 @extends('layouts.consumer')
 
 @section('title', 'Browse Food | RescueBite')
 
-@section('content')
+@section('content') {{-- @yield in consumer.blade = leave blank space right there && dashboard.blade "@section('content')" paste it there --}}
     <section class="consumer-hero">
         <div class="container consumer-hero-content">
             <p class="eyebrow">Rescue a meal today</p>

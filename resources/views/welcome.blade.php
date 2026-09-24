@@ -1,4 +1,4 @@
-@extends('layouts.public') {{-- public.blade.php - uses the shared public layout --}}
+@extends('layouts.public') {{-- public.blade.php - uses the shared public layout (public-header & public-footer) --}}
 
 @section('title', 'RescueBite | Good Food, Less Waste')
 

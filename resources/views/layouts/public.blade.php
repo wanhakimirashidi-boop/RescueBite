@@ -13,7 +13,7 @@
     @include('partials.public-header')
 
     <main>
-        @yield('content')
+        @yield('content')   {{-- content = paste login "@section('content')" here --}}
     </main>
 
     @include('partials.public-footer')

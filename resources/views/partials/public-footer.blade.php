@@ -1,4 +1,5 @@
 {{-- SHARED TEMPLATE FOR PUBLIC FOOTER "@include" --}}
+{{-- THIS PUBLIC-FOOTER & HEADER ONLY USED IN GUEST PAGES ONLY --}}
 
 <footer class="site-footer">
     <div class="container footer-content">

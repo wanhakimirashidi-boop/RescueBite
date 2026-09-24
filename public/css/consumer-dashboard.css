@@ -1,3 +1,5 @@
+/* CSS for consumer.blade & dashboard */
+
 .consumer-page { min-height: 100vh; background: #f4f7f5; }
 .consumer-header { background: #06131e; }
 .consumer-navigation, .consumer-actions, .listing-toolbar, .filter-list, .category-list, .food-details, .consumer-price { display: flex; align-items: center; }

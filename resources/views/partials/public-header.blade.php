@@ -1,4 +1,5 @@
 {{-- SHARED TEMPLATE FOR PUBLIC HEADER "@include" --}}
+{{-- THIS PUBLIC-HEADER & FOOTER ONLY USED IN GUEST PAGES ONLY --}}
 
 <header class="site-header">
     <div class="container navigation">
