@@ -19,7 +19,7 @@ class FoodListing extends Model
         'discounted_price',
         'original_price',
         'expiry_time',
-        'image_url',
+        'image_path',
         'status',
     ];
 

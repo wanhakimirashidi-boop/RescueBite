@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
             'discounted_price' => 6.50,
             'original_price' => 12.00,
             'expiry_time' => now()->addHours(3),
-            'image_url' => 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=700&q=80',
+            'image_path' => null,
             'status' => 'active',
         ]);
 
@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
             'discounted_price' => 5.00,
             'original_price' => 10.00,
             'expiry_time' => now()->addHours(4),
-            'image_url' => 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=700&q=80',
+            'image_path' => null,
             'status' => 'active',
         ]);
     }

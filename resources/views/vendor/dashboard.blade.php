@@ -36,7 +36,7 @@
 
             <nav class="vendor-tabs" aria-label="Vendor panel sections">
                 <button class="vendor-tab vendor-tab-active" type="button">Inventory</button>
-                <button class="vendor-tab" type="button">Add Surplus</button>
+                <a class="vendor-tab" href="{{ route('vendor.food-listings.create') }}">Add Surplus</a>
                 <button class="vendor-tab" type="button">Verify Code</button>
             </nav>
 
@@ -45,13 +45,27 @@
                     <p class="eyebrow">Today&apos;s surplus</p>
                     <h2 id="inventory-title">My listings</h2>
                 </div>
-                <button class="vendor-add-button" type="button">Add surplus</button>
+                <a class="vendor-add-button" href="{{ route('vendor.food-listings.create') }}">Add surplus</a>
             </div>
+
+            @if (session('success'))
+                <p class="vendor-success-message">{{ session('success') }}</p>
+            @endif
 
             <div class="vendor-inventory-list">
                 @forelse ($foodListings as $foodListing)
                     <article class="vendor-listing-card">
-                        <img src="{{ $foodListing->image_url }}" alt="{{ $foodListing->item_name }}">
+                        @if ($foodListing->image_path)
+                            <a class="vendor-listing-image-link" href="#food-image-{{ $foodListing->id }}">
+                                <img src="{{ asset('storage/' . $foodListing->image_path) }}" alt="{{ $foodListing->item_name }}">
+                            </a>
+                            <div class="food-image-modal" id="food-image-{{ $foodListing->id }}">
+                                <a class="food-image-modal-close" href="#">Close</a>
+                                <img src="{{ asset('storage/' . $foodListing->image_path) }}" alt="{{ $foodListing->item_name }}">
+                            </div>
+                        @else
+                            <div class="vendor-listing-image-placeholder">No image</div>
+                        @endif
                         <div class="vendor-listing-details">
                             <div class="vendor-listing-title">
                                 <div>
@@ -68,6 +82,14 @@
                                 <span>Quantity: {{ $foodListing->quantity }}</span>
                                 <span>Reservations: {{ $foodListing->reservations_count }}</span>
                                 <span>Expires: {{ $foodListing->expiry_time->format('g:i A') }}</span>
+                            </div>
+                            <div class="vendor-listing-actions">
+                                <a class="vendor-edit-image-button" href="{{ route('vendor.food-listings.image.edit', $foodListing) }}">Edit image</a>
+                                <form method="POST" action="{{ route('vendor.food-listings.destroy', $foodListing) }}" onsubmit="return confirm('Delete this food listing?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="vendor-delete-button" type="submit">Delete</button>
+                                </form>
                             </div>
                         </div>
                         <div class="vendor-listing-price">

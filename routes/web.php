@@ -34,6 +34,26 @@ Route::get('/vendor/dashboard', [VendorController::class, 'dashboard'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.dashboard');
 
+Route::get('/vendor/surplus/create', [VendorController::class, 'createFoodListing'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
+    ->name('vendor.food-listings.create');
+
+Route::post('/vendor/surplus', [VendorController::class, 'storeFoodListing'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
+    ->name('vendor.food-listings.store');
+
+Route::get('/vendor/food-listings/{foodListing}/image/edit', [VendorController::class, 'editFoodListingImage'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
+    ->name('vendor.food-listings.image.edit');
+
+Route::patch('/vendor/food-listings/{foodListing}/image', [VendorController::class, 'updateFoodListingImage'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
+    ->name('vendor.food-listings.image.update');
+
+Route::delete('/vendor/food-listings/{foodListing}', [VendorController::class, 'destroyFoodListing'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
+    ->name('vendor.food-listings.destroy');
+
 
 
 // LARAVEL BREEZE - Profile routes (for user account management)
