@@ -54,8 +54,6 @@
                     </div>
                 </article>
             </div>
-
-            <p class="dashboard-note">These reservations are sample data. Search and pagination will work with real reservation records after database functionality is added.</p>
         </div>
     </section>
 @endsection

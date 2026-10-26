@@ -95,8 +95,6 @@
                     </div>
                 </article>
             </div>
-
-            <p class="dashboard-note">Reservation, search, and filters will become functional after the RescueBite database is added.</p>
         </div>
     </section>
 @endsection

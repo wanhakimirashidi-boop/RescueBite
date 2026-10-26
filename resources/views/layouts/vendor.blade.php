@@ -19,7 +19,12 @@
             </a>
 
             <nav class="vendor-actions" aria-label="Vendor navigation">
-                <span class="vendor-greeting">Hi, {{ auth()->user()->name }}</span>
+                {{-- $vendorOutlet refer to VendorController --}}
+                @if ($vendorOutlet)
+                    <span class="vendor-greeting">{{ $vendorOutlet->outlet_name }}</span>
+                @else
+                    <span class="vendor-greeting">Hi, {{ auth()->user()->name }}</span>
+                @endif
                 <span class="vendor-panel-label">Vendor Panel</span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

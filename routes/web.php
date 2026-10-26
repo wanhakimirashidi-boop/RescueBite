@@ -14,24 +14,24 @@ Route::get('/', [HomeController::class, 'index']);
 // LARAVEL BREEZE 
 // Consumer routes - Dashboard section
 Route::get('/dashboard', [ConsumerController::class, 'dashboard'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'role:consumer'])
     ->name('dashboard');
 
 // Consumer routes - My Rescues section
 Route::get('/my-rescues', [ConsumerController::class, 'rescues'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'role:consumer'])
     ->name('consumer.rescues');
 
 // Consumer routes - My Rescues History section
 Route::get('/my-rescues/history', [ConsumerController::class, 'rescueHistory'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'role:consumer'])
     ->name('consumer.rescues.history');
 
 
     
 // Vendor routes - Dashboard section
 Route::get('/vendor/dashboard', [VendorController::class, 'dashboard'])
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.dashboard');
 
 
