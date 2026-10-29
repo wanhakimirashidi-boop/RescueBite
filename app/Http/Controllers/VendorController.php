@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class VendorController extends Controller
 {
+    // shows the vendor inventory page using data from VendorOutlet, FoodListing, Reservation, and vendor/dashboard.blade.php
     public function dashboard()
     {
         $vendorOutlet = auth()->user()->vendorOutlet;   //vendorOutlet.php is from VendorOutlet model, relationship with User model
@@ -41,6 +42,7 @@ class VendorController extends Controller
         ]);
     }
 
+    // opens the Add Surplus form in vendor/create-food-listing.blade.php for the logged-in vendor outlet
     // to create food listing
     public function createFoodListing()
     {
@@ -51,6 +53,8 @@ class VendorController extends Controller
         ]);
     }
 
+    // checks the Add Surplus form, stores its image, saves a FoodListing record, then returns to the vendor dashboard
+    // this receives data from create-food-listing.blade.php and use the FoodListing model
     public function storeFoodListing(Request $request)
     {
         $validated = $request->validate([
@@ -75,6 +79,8 @@ class VendorController extends Controller
         return redirect()->route('vendor.dashboard')->with('success', 'Food listing added successfully.');
     }
 
+    // opens the Edit Image form for one food listing after confirming that it belongs to the logged in vendor
+    // this sends the selected FoodListing model to edit-food-listing-image.blade.php
     public function editFoodListingImage(FoodListing $foodListing)
     {
         $vendorOutlet = auth()->user()->vendorOutlet;
@@ -87,6 +93,8 @@ class VendorController extends Controller
         ]);
     }
 
+    // replace one listing image, deletes the old stored image, and updates image_path in the FoodListing model
+    // this receives the new file from edit-food-listing-image.blade.php
     public function updateFoodListingImage(Request $request, FoodListing $foodListing)
     {
         $vendorOutlet = auth()->user()->vendorOutlet;
@@ -110,6 +118,8 @@ class VendorController extends Controller
         return redirect()->route('vendor.dashboard')->with('success', 'Food image updated successfully.');
     }
 
+    // delete one food listing and its stored image after confirming that the listing belongs to the logged in vendor
+    // this is called by the Delete form in vendor/dashboard.blade.php
     public function destroyFoodListing(FoodListing $foodListing)
     {
         $vendorOutlet = auth()->user()->vendorOutlet;
@@ -126,6 +136,7 @@ class VendorController extends Controller
     }
 
     // prevents Vendor A from editing or deleting Vendor B’s listing
+    // checks that the selected FoodListing belongs to the current VendorOutlet before image editing or deletion
     private function ensureFoodListingBelongsToVendor(FoodListing $foodListing, $vendorOutletId)
     {
         if ($foodListing->vendor_outlet_id !== $vendorOutletId) {
