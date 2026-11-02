@@ -167,6 +167,17 @@
     object-fit: cover;
 }
 
+.consumer-listing-image-placeholder {
+    display: flex;
+    height: 155px;
+    align-items: center;
+    justify-content: center;
+    background: #d8e1dc;
+    color: #64716b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
 .consumer-food-content {
     padding: 17px;
 }
@@ -220,6 +231,13 @@
     width: 100%;
     min-height: 38px;
     font-size: 13px;
+}
+
+.consumer-reservation-note {
+    display: block;
+    color: #64716b;
+    font-size: 12px;
+    text-align: center;
 }
 
 .dashboard-note {

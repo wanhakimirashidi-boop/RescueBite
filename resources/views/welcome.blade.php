@@ -7,7 +7,7 @@
         <section class="hero">
             <div class="container hero-content">
                 <p class="eyebrow">Every meal deserves a second chance</p>
-                <h1>Good for You<br><span>Good for Earth.</span></h1>
+                <h1>Good for You<br><span>Good for Earth</span></h1>
                 <p class="hero-copy">Rescue quality surplus food from nearby cafes, food courts, and favourite brands before the day ends.</p>
                 <a class="button" href="{{ route('register') }}">Start rescuing food</a>
             </div>

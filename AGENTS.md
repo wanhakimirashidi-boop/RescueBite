@@ -59,6 +59,7 @@
 - Revisit the data structure only if the user later requests multiple staff accounts for one outlet.
 - Food listings belong to a vendor outlet; reservations belong to one consumer and one food listing.
 - Uploaded food images are stored as local public-storage paths in `image_path`, not external image URLs.
+- QR-based pickup-code scanning is a future improvement. Manual verification remains the current fallback until the consumer reservation flow is complete.
 
 ## Verification
 
