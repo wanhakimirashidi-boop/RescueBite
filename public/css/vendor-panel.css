@@ -333,6 +333,20 @@
     font-weight: 700;
 }
 
+.vendor-error-message {
+    margin: 0 0 20px;
+    padding: 12px 15px;
+    border-radius: 6px;
+    background: #f7dddd;
+    color: #a32828;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.vendor-verify-form {
+    max-width: 520px;
+}
+
 .vendor-form-heading {
     display: flex;
     align-items: center;

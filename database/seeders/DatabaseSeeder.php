@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\FoodListing;
+use App\Models\Reservation;
 use App\Models\User;
 use App\Models\VendorOutlet;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -51,7 +52,7 @@ class DatabaseSeeder extends Seeder
             'outlet_location' => 'UPTEN',
         ]);
 
-        FoodListing::updateOrCreate([
+        $chickenWrapListing = FoodListing::updateOrCreate([
             'vendor_outlet_id' => $vendorOutlet->id,
             'item_name' => 'Chicken Wrap Set',
         ], [
@@ -75,6 +76,15 @@ class DatabaseSeeder extends Seeder
             'expiry_time' => now()->addHours(4),
             'image_path' => null,
             'status' => 'active',
+        ]);
+
+        Reservation::updateOrCreate([
+            'verify_code' => 'RB-DEMO01',
+        ], [
+            'consumer_id' => $consumer->id,
+            'food_listing_id' => $chickenWrapListing->id,
+            'status' => 'reserved',
+            'claimed_at' => null,
         ]);
     }
 }

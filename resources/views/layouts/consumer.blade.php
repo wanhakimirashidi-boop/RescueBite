@@ -1,4 +1,4 @@
-{{-- Consumer Layout - Shared template with dashboard.blade.php --}}
+{{-- Consumer Header - Shared template with dashboard.blade.php --}}
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> {{-- get Language and change the format to en-US --}}
@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Consumer Dashboard | RescueBite')</title>
+    <link rel="icon" type="image/png" href="{{ asset('rescuebite.png') }}">
     <link rel="stylesheet" href="{{ asset('css/guest-home.css') }}">
     <link rel="stylesheet" href="{{ asset('css/consumer-dashboard.css') }}">
 </head>
@@ -14,7 +15,7 @@
     <header class="consumer-header">
         <div class="container consumer-navigation">
             <a class="brand" href="{{ route('dashboard') }}" aria-label="RescueBite dashboard">
-                <span class="brand-mark" aria-hidden="true">R</span>
+                <img src="{{ asset('rescuebite.png') }}" alt="RescueBite" class="brand-mark">
                 <span>Rescue<span>Bite</span></span>
             </a>
 

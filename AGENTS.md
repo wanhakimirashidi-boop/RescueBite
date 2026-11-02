@@ -36,6 +36,8 @@
 - Use a `Service` class when repeated business logic or a multi-step workflow appears in more than one controller or action.
 - Use `Helpers.php` only for small reusable non-business utilities such as formatting. Do not create a helper or service only to move a few lines of code.
 - Do not add unnecessary files, abstractions, packages, or advanced patterns.
+- Implement changes step by step (according to its relevent functions and files), do not do all in one prompt
+- After implementation, ensure to provide brief summary of the changes you've made
 
 ## Database And Backend
 
@@ -51,6 +53,7 @@
 ## RescueBite Business Rules
 
 - Roles are `consumer`, `vendor`, and `admin`.
+- Public registration creates consumer accounts only. Vendor access is granted by an admin after approving the vendor and assigning one vendor outlet.
 - The system is open to the public. UNITEN is a nearby/community UI focus only; do not add UNITEN-specific backend columns, variables, priorities, or access rules unless the user explicitly requests them.
 - Current design: one vendor user account manages one `vendor_outlet`.
 - Revisit the data structure only if the user later requests multiple staff accounts for one outlet.

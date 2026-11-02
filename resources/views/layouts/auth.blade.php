@@ -12,7 +12,8 @@
 
     {{-- @section('title', 'Log in | RescueBite') in login.blade = "Pass this exact text to auth.blade to fill the 'title' placeholder --}}
 
-
+    {{-- URL tab logo --}}
+    <link rel="icon" type="image/png" href="{{ asset('rescuebite.png') }}">
     <link rel="stylesheet" href="{{ asset('css/guest-home.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 </head>

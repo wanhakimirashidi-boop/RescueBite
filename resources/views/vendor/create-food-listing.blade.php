@@ -23,6 +23,7 @@
                 <a class="vendor-back-link" href="{{ route('vendor.dashboard') }}">Back to inventory</a>
             </div>
 
+            {{-- when "Add Surplus" button clicked, send form to POST vendor/surplus (web.php) --}}
             <form class="vendor-form" method="POST" action="{{ route('vendor.food-listings.store') }}" enctype="multipart/form-data">
                 @csrf
 

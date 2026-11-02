@@ -53,7 +53,7 @@ class VendorController extends Controller
         ]);
     }
 
-    // checks the Add Surplus form, stores its image, saves a FoodListing record, then returns to the vendor dashboard
+    // checks the Add Surplus form (create-food-listing.blade), stores its image, saves a FoodListing record, then returns to the vendor dashboard
     // this receives data from create-food-listing.blade.php and use the FoodListing model
     public function storeFoodListing(Request $request)
     {
@@ -135,6 +135,48 @@ class VendorController extends Controller
         return redirect()->route('vendor.dashboard')->with('success', 'Food listing deleted successfully.');
     }
 
+    // opens the Verify Code form in vendor/verify-code.blade.php for the logged-in vendor outlet
+    public function showVerifyCode()
+    {
+        $vendorOutlet = auth()->user()->vendorOutlet;
+
+        return view('vendor.verify-code', [
+            'vendorOutlet' => $vendorOutlet,
+        ]);
+    }
+
+    // finds a reserved code for this vendor outlet, then changes that Reservation record to claimed
+    // this receives the code from vendor/verify-code.blade.php and uses the Reservation and FoodListing models
+    public function verifyCode(Request $request)
+    {
+        $validated = $request->validate([
+            'verify_code' => ['required', 'string', 'max:50'],
+        ]);
+
+        $vendorOutlet = auth()->user()->vendorOutlet;
+
+        $reservation = Reservation::where('verify_code', $validated['verify_code'])
+            ->where('status', 'reserved')
+            ->whereHas('foodListing', function ($query) use ($vendorOutlet) {
+                $query->where('vendor_outlet_id', $vendorOutlet->id);
+            })
+            ->with(['consumer', 'foodListing'])
+            ->first();
+
+        if (!$reservation) {
+            return back()->withInput()->with('error', 'This code is invalid, already claimed, or belongs to another outlet.');
+        }
+
+        $reservation->update([
+            'status' => 'claimed',
+            'claimed_at' => now(),
+        ]);
+
+        return redirect()->route('vendor.verify-code.create')
+            ->with('success', 'Pickup claimed for ' . $reservation->consumer->name . ': ' . $reservation->foodListing->item_name . '.');
+    }
+
+    
     // prevents Vendor A from editing or deleting Vendor B’s listing
     // checks that the selected FoodListing belongs to the current VendorOutlet before image editing or deletion
     private function ensureFoodListingBelongsToVendor(FoodListing $foodListing, $vendorOutletId)

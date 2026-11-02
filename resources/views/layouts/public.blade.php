@@ -2,11 +2,11 @@
 
 <!DOCTYPE html>                 {{-- app()->getLocale() = checks Laravel settings to see what language (EN or en_US)--}}
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
- {{-- lang="{{ str_replace() = format those language with "-" not "_"--}}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'RescueBite')</title>
+    <link rel="icon" type="image/png" href="{{ asset('rescuebite.png') }}">
     <link rel="stylesheet" href="{{ asset('css/guest-home.css') }}">
 </head>
 <body>

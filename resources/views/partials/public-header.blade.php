@@ -6,7 +6,7 @@
 
         {{-- makes the logo clickable to homepage || url('/') refer to web.php line 7 which is homepage --}}
         <a class="brand" href="{{ url('/') }}" aria-label="RescueBite home">
-            <span class="brand-mark" aria-hidden="true">R</span>
+            <img src="{{ asset('rescuebite.png') }}" alt="RescueBite" class="brand-mark">
             <span>Rescue<span>Bite</span></span>
         </a>
 

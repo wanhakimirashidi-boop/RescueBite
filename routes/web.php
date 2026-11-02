@@ -54,6 +54,14 @@ Route::delete('/vendor/food-listings/{foodListing}', [VendorController::class, '
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.food-listings.destroy');
 
+Route::get('/vendor/verify-code', [VendorController::class, 'showVerifyCode'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
+    ->name('vendor.verify-code.create');
+
+Route::post('/vendor/verify-code', [VendorController::class, 'verifyCode'])
+    ->middleware(['auth', 'verified', 'role:vendor'])
+    ->name('vendor.verify-code.store');
+
 
 
 // LARAVEL BREEZE - Profile routes (for user account management)

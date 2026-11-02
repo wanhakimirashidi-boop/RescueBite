@@ -37,7 +37,7 @@
             <nav class="vendor-tabs" aria-label="Vendor panel sections">
                 <button class="vendor-tab vendor-tab-active" type="button">Inventory</button>
                 <a class="vendor-tab" href="{{ route('vendor.food-listings.create') }}">Add Surplus</a>
-                <button class="vendor-tab" type="button">Verify Code</button>
+                <a class="vendor-tab" href="{{ route('vendor.verify-code.create') }}">Verify Code</a>
             </nav>
 
             <div class="vendor-list-heading">

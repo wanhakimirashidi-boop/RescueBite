@@ -13,6 +13,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- URL icon --}}
+        <link rel="icon" type="image/png" href="{{ asset('rescuebite.png') }}">   
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
