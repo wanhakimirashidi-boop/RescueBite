@@ -17,6 +17,15 @@ Route::get('/dashboard', [ConsumerController::class, 'dashboard'])
     ->middleware(['auth', 'verified', 'role:consumer'])
     ->name('dashboard');
 
+// Consumer routes - Food Listings section
+Route::get('/food-listings/{foodListing}/reserve', [ConsumerController::class, 'showReservationConfirmation'])
+    ->middleware(['auth', 'verified', 'role:consumer'])
+    ->name('consumer.reservations.confirm');
+// Consumer routes - Store reservation
+Route::post('/food-listings/{foodListing}/reserve', [ConsumerController::class, 'storeReservation'])
+    ->middleware(['auth', 'verified', 'role:consumer'])
+    ->name('consumer.reservations.store');
+
 // Consumer routes - My Rescues section
 Route::get('/my-rescues', [ConsumerController::class, 'rescues'])
     ->middleware(['auth', 'verified', 'role:consumer'])

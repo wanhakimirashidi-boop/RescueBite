@@ -230,7 +230,102 @@
     display: flex;
     width: 100%;
     min-height: 38px;
+    align-items: center;
+    justify-content: center;
     font-size: 13px;
+    text-decoration: none;
+}
+
+.reservation-confirmation-content {
+    padding: 58px 0 80px;
+}
+
+.reservation-confirmation-card {
+    display: grid;
+    max-width: 760px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    overflow: hidden;
+    margin: 0 auto;
+    border: 1px solid #d8e1dc;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.reservation-confirmation-card > img,
+.reservation-confirmation-card > .consumer-listing-image-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+}
+
+.reservation-confirmation-details {
+    padding: 30px;
+}
+
+.reservation-confirmation-details h2 {
+    margin-bottom: 8px;
+    font-size: 28px;
+}
+
+.reservation-confirmation-pickup,
+.reservation-confirmation-quantity,
+.reservation-confirmation-price {
+    margin: 0 0 12px;
+    color: #24332c;
+    font-size: 14px;
+}
+
+.reservation-confirmation-price {
+    margin-top: 20px;
+    color: #08763b;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.reservation-confirmation-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.reservation-confirmation-actions form {
+    margin: 0;
+}
+
+.consumer-back-button,
+.consumer-confirm-button {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.consumer-back-button {
+    background: #e7eeea;
+    color: #24332c;
+}
+
+.consumer-back-button:hover {
+    background: #d8e1dc;
+}
+
+.consumer-confirm-button {
+    background: #168b46;
+    color: #ffffff;
+}
+
+.consumer-confirm-button:hover {
+    background: #08763b;
 }
 
 .consumer-reservation-note {
@@ -238,6 +333,36 @@
     color: #64716b;
     font-size: 12px;
     text-align: center;
+}
+
+.consumer-error-message,
+.consumer-success-message {
+    margin: 0 0 22px;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.consumer-error-message {
+    background: #f7dddd;
+    color: #a32828;
+}
+
+.consumer-success-message {
+    background: #dff8e8;
+    color: #08763b;
+}
+
+.rescue-listing-image-placeholder {
+    display: flex;
+    min-height: 170px;
+    align-items: center;
+    justify-content: center;
+    background: #d8e1dc;
+    color: #64716b;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .dashboard-note {
@@ -412,6 +537,26 @@
 
     .consumer-food-grid {
         grid-template-columns: 1fr;
+    }
+
+    .reservation-confirmation-card {
+        grid-template-columns: 1fr;
+    }
+
+    .reservation-confirmation-card > img,
+    .reservation-confirmation-card > .consumer-listing-image-placeholder {
+        height: 220px;
+        min-height: 220px;
+    }
+
+    .reservation-confirmation-details {
+        padding: 22px;
+    }
+
+    .reservation-confirmation-actions,
+    .reservation-confirmation-actions form,
+    .consumer-confirm-button {
+        width: 100%;
     }
 
     .rescue-card {

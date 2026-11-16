@@ -22,36 +22,40 @@
             @include('consumer.partials.rescue-list-navigation', ['currentList' => 'active'])
             {{-- temp variable $currentList = 'active' for rescue-list-navigation to decide which UI to display rescues.blade or rescue-history.blade --}}
 
-            <div class="rescue-list">
-                <article class="rescue-card">
-                    <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Chicken wrap set">
-                    <div class="rescue-card-details">
-                        <p class="food-vendor">Tealive</p>
-                        <h3>Chicken Wrap Set</h3>
-                        <p class="food-location">Sri Kembangan</p>
-                        <p class="rescue-pickup-time">Pick up before 8:30 PM today</p>
-                    </div>
-                    <div class="rescue-code-box">
-                        <span class="rescue-status rescue-status-active">Reserved</span>
-                        <p>Show this pickup code</p>
-                        <strong>RB-8B0T46</strong>
-                    </div>
-                </article>
+            @if (session('success'))
+                <p class="consumer-success-message">{{ session('success') }}</p>
+            @endif
 
-                <article class="rescue-card">
-                    <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Fresh pastry box">
-                    <div class="rescue-card-details">
-                        <p class="food-vendor">Family Mart</p>
-                        <h3>Pastry Box</h3>
-                        <p class="food-location">IOI City Mall</p>
-                        <p class="rescue-pickup-time">Pick up before 9:30 PM today</p>
-                    </div>
-                    <div class="rescue-code-box">
-                        <span class="rescue-status rescue-status-active">Reserved</span>
-                        <p>Show this pickup code</p>
-                        <strong>RB-3C1N92</strong>
-                    </div>
-                </article>
+            <div class="rescue-list">
+                @forelse ($reservations as $reservation)
+                    <article class="rescue-card">
+
+                        {{-- Display food image --}}
+                        @if ($reservation->foodListing->image_path)
+                            <img src="{{ asset('storage/' . $reservation->foodListing->image_path) }}" alt="{{ $reservation->foodListing->item_name }}">
+                        @else
+                            <div class="rescue-listing-image-placeholder">No image</div>
+                        @endif
+                        {{-- foodListing is from Reservation.php --}}
+
+                        {{-- Display food details --}}
+                        <div class="rescue-card-details">
+                            
+                            {{-- to read: starting from "$reservation", find its food listing, then find that food listing's vendor outlet--}}
+                            <p class="food-vendor">{{ $reservation->foodListing->vendorOutlet->outlet_name }}</p> {{-- refer to database --}}
+                            <h3>{{ $reservation->foodListing->item_name }}</h3> {{-- Food Item Name --}}
+                            <p class="food-location">{{ $reservation->foodListing->vendorOutlet->outlet_location }}</p> {{-- Vendor Outlet Location --}}
+                            <p class="rescue-pickup-time">Pick up before {{ $reservation->foodListing->expiry_time->format('g:i A') }}</p> {{-- Food Expiry Time --}}
+                        </div>
+                        <div class="rescue-code-box">
+                            <span class="rescue-status rescue-status-active">Reserved</span>
+                            <p>Show this pickup code</p>
+                            <strong>{{ $reservation->verify_code }}</strong>
+                        </div>
+                    </article>
+                @empty
+                    <p class="dashboard-note">You do not have any active rescues yet.</p>
+                @endforelse
             </div>
         </div>
     </section>

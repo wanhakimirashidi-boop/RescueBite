@@ -24,6 +24,10 @@
                 </div>
             </div>
 
+            @if (session('error'))
+                <p class="consumer-error-message">{{ session('error') }}</p>
+            @endif
+
             <div class="consumer-food-grid">
                 @forelse ($foodListings as $foodListing)
                     <article class="consumer-food-card">
@@ -38,7 +42,7 @@
                             <p class="food-location">{{ $foodListing->vendorOutlet->outlet_location }}</p>
                             <div class="food-details"><span>Pick up by {{ $foodListing->expiry_time->format('g:i A') }}</span><span>{{ $foodListing->quantity }} left</span></div>
                             <div class="consumer-price"><strong>RM {{ $foodListing->discounted_price }}</strong><span>RM {{ $foodListing->original_price }}</span></div>
-                            <span class="consumer-reservation-note">Reservation will be added next.</span>
+                            <a class="button consumer-reserve-button" href="{{ route('consumer.reservations.confirm', $foodListing) }}">Reserve</a>
                         </div>
                     </article>
                 @empty
