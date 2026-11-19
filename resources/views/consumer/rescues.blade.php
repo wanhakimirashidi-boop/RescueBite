@@ -57,6 +57,8 @@
                     <p class="dashboard-note">You do not have any active rescues yet.</p>
                 @endforelse
             </div>
+
+            @include('consumer.partials.rescue-pagination')
         </div>
     </section>
 @endsection

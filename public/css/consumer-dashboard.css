@@ -591,13 +591,34 @@
 }
 
 .rescue-search input {
-    width: 280px;
+    width: 210px;
     min-height: 42px;
     padding: 0 14px;
     border: 1px solid #b9c8c0;
     border-radius: 6px;
     background: #ffffff;
     font-size: 14px;
+}
+
+.rescue-search {
+    display: flex;
+    gap: 8px;
+}
+
+.rescue-search button {
+    min-height: 42px;
+    padding: 0 15px;
+    border: 0;
+    border-radius: 6px;
+    background: #168b46;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.rescue-search button:hover {
+    background: #08763b;
 }
 
 .rescue-list-tabs {
@@ -624,6 +645,53 @@
     color: #08763b;
 }
 
+.rescue-back-button {
+    margin-bottom: 24px;
+}
+
+.rescue-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.rescue-pagination-button,
+.rescue-pagination-page {
+    display: inline-flex;
+    min-width: 38px;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    border: 1px solid #b9c8c0;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #24332c;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.rescue-pagination-button:hover,
+.rescue-pagination-page:hover {
+    border-color: #08763b;
+    color: #08763b;
+}
+
+.rescue-pagination-current {
+    border-color: #168b46;
+    background: #168b46;
+    color: #ffffff;
+}
+
+.rescue-pagination-disabled {
+    background: #edf2ef;
+    color: #8b9791;
+}
+
 @media (max-width: 640px) {
     .rescue-list-toolbar {
         align-items: flex-start;
@@ -632,6 +700,15 @@
 
     .rescue-search,
     .rescue-search input {
+        width: auto;
+    }
+
+    .rescue-search {
         width: 100%;
+    }
+
+    .rescue-search input {
+        flex: 1;
+        min-width: 0;
     }
 }

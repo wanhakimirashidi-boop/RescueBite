@@ -69,8 +69,8 @@ a {
 
 .brand-mark {
     display: grid;
-    width: 34px;
-    height: 34px;
+    width: 50px;
+    height: 50px;
     place-items: center;
     border-radius: 50%;
     background: var(--green);

@@ -61,22 +61,53 @@ class ConsumerController extends Controller
     // My Rescues page - Active Rescues for consumers
     public function rescues()
     {
-        $reservations = Reservation::with(['foodListing.vendorOutlet'])
-            ->where('consumer_id', auth()->id())
-            ->where('status', 'reserved')
-            ->orderByDesc('created_at')
-            ->get();
+        // request('search') reads search input from URL - e.g. /consumer/rescues-history?search=roti
+        $searchTerm = request('search');
+
+        // getConsumerReservations() is a private function below (line 93)
+        $reservations = $this->getConsumerReservations('reserved', $searchTerm, 'created_at');
 
         // rescues.blade
-        return view('consumer.rescues', [ 
+        return view('consumer.rescues', [
             'reservations' => $reservations,
+            'searchTerm' => $searchTerm,
         ]);
     }
 
     // My Rescues History page - Past Rescues for consumers
     public function rescueHistory()
     {
-        return view('consumer.rescues-history'); // rescues-history.blade
+        // request('search') reads search input from URL - e.g. /consumer/rescues-history?search=roti
+        $searchTerm = request('search');    // refer to rescues-list-navigation.blade search form input name="search"
+
+        // 'claimed' only get claimed reservations || $searchTerm allow search items || 'claimed_at' to get the newest
+        $reservations = $this->getConsumerReservations('claimed', $searchTerm, 'claimed_at');
+
+        return view('consumer.rescues-history', [
+            'reservations' => $reservations,
+            'searchTerm' => $searchTerm,
+        ]); // rescues-history.blade
     }
 
+    // Gets one consumer's reservations, optionally searches the food item or outlet & shows 10 records per page
+    // This is shared by rescues.blade.blade and rescues-history.blade
+    private function getConsumerReservations($reservationStatus, $searchTerm, $sortColumn)
+    {
+        $reservationQuery = Reservation::with(['foodListing.vendorOutlet'])
+            ->where('consumer_id', auth()->id())
+            ->where('status', $reservationStatus);
+
+        if ($searchTerm) {
+            $reservationQuery->whereHas('foodListing', function ($foodListingQuery) use ($searchTerm) {
+                $foodListingQuery->where('item_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhereHas('vendorOutlet', function ($vendorOutletQuery) use ($searchTerm) {
+                        $vendorOutletQuery->where('outlet_name', 'like', '%' . $searchTerm . '%');
+                    });
+            });
+        }
+
+        return $reservationQuery->orderByDesc($sortColumn)
+            ->paginate(10)
+            ->withQueryString();
+    }
 }

@@ -16,10 +16,15 @@
     </div>
 
     {{-- Search bar --}}
-    <div class="rescue-search">
-        <label class="screen-reader-only" for="rescue-search">Search rescues</label>
-        <input id="rescue-search" type="search" placeholder="Search meal or outlet">
-    </div>
+    @if ($currentList === 'active')
+        <form class="rescue-search" method="GET" action="{{ route('consumer.rescues') }}">
+    @else
+        <form class="rescue-search" method="GET" action="{{ route('consumer.rescues.history') }}">
+    @endif
+            <label class="screen-reader-only" for="rescue-search">Search rescues</label>
+            <input id="rescue-search" name="search" type="search" value="{{ $searchTerm }}" placeholder="Search meal or outlet">
+            <button type="submit">Search</button>
+        </form>
 </div>
 
 {{-- Navigation tabs for switching between active rescues and rescue history --}}
@@ -36,3 +41,5 @@
         <a class="rescue-list-tab rescue-list-tab-active" href="{{ route('consumer.rescues.history') }}">Rescue History</a>
     @endif
 </nav>
+
+<a class="consumer-back-button rescue-back-button" href="{{ route('dashboard') }}">&larr; Back to Browse Food</a>

@@ -23,37 +23,38 @@
             {{-- temp variable $currentList = 'history' for rescue-list-navigation to decide which UI to display rescues.blade or rescue-history.blade --}}
 
 
+            {{-- Rescue history items --}}
             <div class="rescue-list">
-                <article class="rescue-card rescue-card-history">
-                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Beef cheese sandwich">
-                    <div class="rescue-card-details">
-                        <p class="food-vendor">Subway</p>
-                        <h3>Beef Cheese Sub</h3>
-                        <p class="food-location">EVO Mall</p>
-                        <p class="rescue-pickup-time">Collected on 18 September 2026</p>
-                    </div>
-                    <div class="rescue-code-box">
-                        <span class="rescue-status rescue-status-claimed">Claimed</span>
-                        <p>Pickup completed</p>
-                        <strong>RM 6.00</strong>
-                    </div>
-                </article>
+                @forelse ($reservations as $reservation)
 
-                <article class="rescue-card rescue-card-history">
-                    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Personal pizza">
-                    <div class="rescue-card-details">
-                        <p class="food-vendor">Domino's</p>
-                        <h3>Personal Pizza</h3>
-                        <p class="food-location">Bangi Seksyen 3</p>
-                        <p class="rescue-pickup-time">Collected on 16 September 2026</p>
-                    </div>
-                    <div class="rescue-code-box">
-                        <span class="rescue-status rescue-status-claimed">Claimed</span>
-                        <p>Pickup completed</p>
-                        <strong>RM 8.90</strong>
-                    </div>
-                </article>
+                {{-- display image --}}
+                    <article class="rescue-card rescue-card-history">
+                        @if ($reservation->foodListing->image_path)
+                            <img src="{{ asset('storage/' . $reservation->foodListing->image_path) }}" alt="{{ $reservation->foodListing->item_name }}">
+                        @else
+                            <div class="rescue-listing-image-placeholder">No image</div>
+                        @endif
+
+                        {{-- display details --}}
+                        <div class="rescue-card-details">
+                            <p class="food-vendor">{{ $reservation->foodListing->vendorOutlet->outlet_name }}</p>
+                            <h3>{{ $reservation->foodListing->item_name }}</h3>
+                            <p class="food-location">{{ $reservation->foodListing->vendorOutlet->outlet_location }}</p>
+                            <p class="rescue-pickup-time">Collected on {{ $reservation->claimed_at->format('d F Y') }}</p>
+                        </div>
+                        <div class="rescue-code-box">
+                            <span class="rescue-status rescue-status-claimed">Claimed</span>
+                            <p>Pickup completed</p>
+                            <strong>RM {{ $reservation->foodListing->discounted_price }}</strong>
+                        </div>
+                    </article>
+                @empty
+                    <p class="dashboard-note">You do not have any rescue history yet.</p>
+                @endforelse
             </div>
+
+            {{-- Paginations --}}
+            @include('consumer.partials.rescue-pagination')
         </div>
     </section>
 @endsection

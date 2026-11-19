@@ -15,7 +15,7 @@
     <header class="consumer-header">
         <div class="container consumer-navigation">
             <a class="brand" href="{{ route('dashboard') }}" aria-label="RescueBite dashboard">
-                <img src="{{ asset('rescuebite.png') }}" alt="RescueBite" class="brand-mark">
+                <img src="{{ asset('rescuebite.png') }}" alt="RescueBite" class="brand-mark"> {{-- Brand = logo image --}}
                 <span>Rescue<span>Bite</span></span>
             </a>
 
