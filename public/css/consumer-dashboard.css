@@ -497,12 +497,26 @@
     color: #175a9a;
 }
 
+.rescue-status-expired,
+.rescue-expiry-count {
+    background: #fce6d3;
+    color: #b64d12;
+}
+
 .rescue-history-heading {
+    margin-top: 54px;
+}
+
+.rescue-expiry-heading {
     margin-top: 54px;
 }
 
 .rescue-card-history {
     opacity: 0.82;
+}
+
+.rescue-card-expired {
+    opacity: 0.78;
 }
 
 @media (max-width: 980px) {

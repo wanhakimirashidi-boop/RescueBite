@@ -67,9 +67,13 @@ class ConsumerController extends Controller
         // getConsumerReservations() is a private function below (line 93)
         $reservations = $this->getConsumerReservations('reserved', $searchTerm, 'created_at');
 
+        // Gets expired reservations for only three days after their food listing expiry time
+        $recentExpiredReservations = $this->getRecentExpiredReservations($searchTerm);
+
         // rescues.blade
         return view('consumer.rescues', [
             'reservations' => $reservations,
+            'recentExpiredReservations' => $recentExpiredReservations,
             'searchTerm' => $searchTerm,
         ]);
     }
@@ -93,6 +97,33 @@ class ConsumerController extends Controller
     // This is shared by rescues.blade.blade and rescues-history.blade
     private function getConsumerReservations($reservationStatus, $searchTerm, $sortColumn)
     {
+        $reservationQuery = $this->getConsumerReservationQuery($reservationStatus, $searchTerm);
+
+        return $reservationQuery->orderByDesc($sortColumn)
+            ->paginate(10)
+            ->withQueryString();
+    }
+
+    // Gets expired reservations whose food listing expiry time was within the past three days
+    // This sends records to the Recent Expiries section in consumer/rescues.blade.php
+    private function getRecentExpiredReservations($searchTerm)
+    {
+        $threeDaysAgo = now()->subDays(3);
+        $currentTime = now();
+
+        return $this->getConsumerReservationQuery('expired', $searchTerm)
+            ->whereHas('foodListing', function ($foodListingQuery) use ($threeDaysAgo, $currentTime) {
+                $foodListingQuery->where('expiry_time', '>=', $threeDaysAgo)
+                    ->where('expiry_time', '<=', $currentTime);
+            })
+            ->orderByDesc('updated_at')
+            ->get();
+    }
+
+    // Builds the shared Reservation query for active, claimed, and expired consumer records
+    // Both rescue list methods use this so their search rules stay the same
+    private function getConsumerReservationQuery($reservationStatus, $searchTerm)
+    {
         $reservationQuery = Reservation::with(['foodListing.vendorOutlet'])
             ->where('consumer_id', auth()->id())
             ->where('status', $reservationStatus);
@@ -106,8 +137,6 @@ class ConsumerController extends Controller
             });
         }
 
-        return $reservationQuery->orderByDesc($sortColumn)
-            ->paginate(10)
-            ->withQueryString();
+        return $reservationQuery;
     }
 }
