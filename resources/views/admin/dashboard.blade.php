@@ -89,8 +89,8 @@
                         <strong class="admin-cell-red">{{ $wasteAnalytics['expiredReservationCount'] }}</strong>
                     </article>
                     <article class="admin-waste-metric">
-                        <span>Expired Listings (Qty Left)</span>
-                        <strong class="admin-cell-red">{{ $wasteAnalytics['expiredListingCount'] }} ({{ $wasteAnalytics['expiredQuantityLeft'] }})</strong>
+                        <span>Unsold Food Wasted</span>
+                        <strong class="admin-cell-red">{{ $wasteAnalytics['expiredQuantityLeft'] }}</strong>
                     </article>
                     <article class="admin-waste-metric">
                         <span>Pickup Completion</span>

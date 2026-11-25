@@ -153,9 +153,9 @@ class AdminController extends Controller
         $claimedCount = Reservation::where('status', 'claimed')->count();
         $unclaimedCount = Reservation::where('status', 'reserved')->count();
         $expiredReservationCount = Reservation::where('status', 'expired')->count();
-        $expiredListingCount = FoodListing::where('status', 'expired')->count();
         $expiredQuantityLeft = (int) FoodListing::where('status', 'expired')->sum('quantity');
 
+        // Calculate percentage of claimed reservations "PICKUP COMPLETION" over the total of claimed and expired reservations
         $completedOrMissedTotal = $claimedCount + $expiredReservationCount;
         $rescueRate = 0;
 
@@ -167,7 +167,6 @@ class AdminController extends Controller
             'claimedCount' => $claimedCount,
             'unclaimedCount' => $unclaimedCount,
             'expiredReservationCount' => $expiredReservationCount,
-            'expiredListingCount' => $expiredListingCount,
             'expiredQuantityLeft' => $expiredQuantityLeft,
             'rescueRate' => $rescueRate,
         ];
