@@ -26,6 +26,7 @@ Route::get('/food-listings/{foodListing}/reserve', [ConsumerController::class, '
 Route::post('/food-listings/{foodListing}/reserve', [ConsumerController::class, 'storeReservation'])
     ->middleware(['auth', 'verified', 'role:consumer'])
     ->name('consumer.reservations.store');
+// POST = make new things
 
 // Consumer routes - My Rescues section
 Route::get('/my-rescues', [ConsumerController::class, 'rescues'])
@@ -44,30 +45,34 @@ Route::get('/vendor/dashboard', [VendorController::class, 'dashboard'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.dashboard');
 
+// Vendor routes - Food Listings section
 Route::get('/vendor/surplus/create', [VendorController::class, 'createFoodListing'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.food-listings.create');
-
+// Vendor routes - Store food listing
 Route::post('/vendor/surplus', [VendorController::class, 'storeFoodListing'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.food-listings.store');
 
+// Vendor routes - Edit food listing
 Route::get('/vendor/food-listings/{foodListing}/image/edit', [VendorController::class, 'editFoodListingImage'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.food-listings.image.edit');
-
-Route::patch('/vendor/food-listings/{foodListing}/image', [VendorController::class, 'updateFoodListingImage'])
+// Vendor routes - Update food listing image
+Route::patch('/vendor/food-listings/{foodListing}/image', [VendorController::class, 'updateFoodListingImage'])      // PATCH = update existing things
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.food-listings.image.update');
-
+// Vendor routes - Delete food listing
 Route::delete('/vendor/food-listings/{foodListing}', [VendorController::class, 'destroyFoodListing'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.food-listings.destroy');
 
+// Vendor routes - Verify code page
 Route::get('/vendor/verify-code', [VendorController::class, 'showVerifyCode'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.verify-code.create');
 
+// Vendor routes - Verify code submission
 Route::post('/vendor/verify-code', [VendorController::class, 'verifyCode'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.verify-code.store');
@@ -84,11 +89,13 @@ Route::get('/admin/users', [AdminController::class, 'users'])
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users');
 
-Route::patch('/admin/users/{user}/toggle-block', [AdminController::class, 'toggleUserBlock'])
+// Admin routes - Block or unblock users
+Route::patch('/admin/users/{user}/toggle-block', [AdminController::class, 'toggleUserBlock'])   // PATCH = update existing things
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users.toggle-block');
 
-Route::post('/admin/users/grant-vendor', [AdminController::class, 'grantVendorAccess'])
+// Admin routes - Grant vendor access to consumer users
+Route::post('/admin/users/grant-vendor', [AdminController::class, 'grantVendorAccess'])     // POST = make new things
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users.grant-vendor');
 

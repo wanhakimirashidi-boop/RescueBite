@@ -10,9 +10,14 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    // FOR ADMIN: ANALYTICS section
     // Connected view: admin/dashboard.blade
     public function dashboard()
     {
+        // this function is called when admin login/clicks "Analytics" tab in panel-overview.blade, referring to web.php GET (/admin/dashboard)
+        // it loads summary cards, breakdowns, waste stats, and recent reservations, then opens admin/dashboard.blade (in the return view below)
+
+
         // variables from functions below
         $summaryStatistics = $this->getSummaryStatistics();
         $vendorBreakdown = $this->getVendorBreakdown();
@@ -33,11 +38,14 @@ class AdminController extends Controller
     // Connected view: admin/users.blade.php
     public function users()
     {
+        // this function is called when admin clicks "Users" tab or submits Search in admin/users.blade, referring to web.php GET (/admin/users)
+        // it loads paginated users (filtered if ?search= exists) and active consumers, then opens admin/users.blade (in the return view below)
+
         $summaryStatistics = $this->getSummaryStatistics();         // getSummaryStatistics() from function below
         $searchTerm = request('search');                            // search from "name=search" in admin/users.blade.php
 
         // specifically for admin/users.blade (line 52). bcs we need user to hold vendorOutlet if they have one for that blade section
-        $userQuery = User::with('vendorOutlet')                     // with('vendorOutlet') = after finding all users, also show their vendorOutlet (Vendor only) IF they have one
+        $userQuery = User::with('vendorOutlet')                     // with('vendorOutlet') = after finding all users, also show their vendorOutlet (Vendor) ONLY IF they have one
             ->orderBy('name');
 
         // % for similarity search, like a "contains" search
@@ -52,7 +60,7 @@ class AdminController extends Controller
         // withQueryString() = RUNS the searched sql query 
         $users = $userQuery->paginate(10)->withQueryString();
 
-        // Active consumer accounts eligible to be approved as vendors with an assigned outlet.
+        // Active consumer eligible to be approved as vendors with an assigned outlet || refer to admin/users.blade (line 107)
         $consumerUsers = User::where('role', 'consumer')
             ->where('is_blocked', false)
             ->orderBy('name')
@@ -66,19 +74,24 @@ class AdminController extends Controller
         ]);
     }
 
-    // Blocks or unblocks a consumer or vendor account from the Admin Users table.
+    // Blocks or unblocks users
     public function toggleUserBlock(User $user)
     {
+        // this function is called when admin click "Block" or "Unblock" button in admin/users.blade and it refer to web.php PATCH then opens this function
+        // e.g; "block" button clicked, it will change/toggle current user is_blocked status 
+
         if ($user->role === 'admin') {
             return back()->with('error', 'Admin accounts cannot be blocked.');
         }
 
-        $newBlockedStatus = !$user->is_blocked;
+        // NOT(user is blocked) || REFER EXAMPLE ABOVE
+        $newBlockedStatus = !$user->is_blocked; // is_blocked uses boolean on DB
 
         $user->update([
             'is_blocked' => $newBlockedStatus,
         ]);
 
+        // web.php refer to User ID, so it automatically detect which user opened the page
         if ($newBlockedStatus) {
             return redirect()->route('admin.users')->with('success', $user->name . ' has been blocked.');
         }
@@ -86,7 +99,7 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', $user->name . ' has been unblocked.');
     }
 
-    // Promotes a consumer account to vendor and assigns one vendor outlet.
+    // this function is called when admin clicks "Approve as Vendor" button in admin/users.blade, referring to web.php POST (/admin/users/grant-vendor)
     public function grantVendorAccess(Request $request)
     {
         $validated = $request->validate([
@@ -115,11 +128,14 @@ class AdminController extends Controller
             'outlet_location' => $validated['outlet_location'],
         ]);
 
+        // it validates the form, changes selected consumer's role to 'vendor', and creates their row in vendor_outlets table
         return redirect()->route('admin.users')
             ->with('success', $selectedUser->name . ' has been approved as a vendor for ' . $validated['outlet_name'] . '.');
     }
     // END OF ADMIN USERS SECTION
 
+
+    
     // START OF ADMIN DASHBOARD SECTION
     // 4 Cards at very top (Total Users, Food Rescued, Active Listing, Total Savings).
     private function getSummaryStatistics()
