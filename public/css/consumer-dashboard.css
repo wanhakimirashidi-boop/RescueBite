@@ -39,10 +39,14 @@
 .consumer-nav-button,
 .filter-button,
 .category-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: 0;
     cursor: pointer;
     font-size: 13px;
     font-weight: 700;
+    text-decoration: none;
 }
 
 .consumer-nav-button {
@@ -90,7 +94,9 @@
 
 .vendor-filter {
     padding: 15px 0;
-    background: #202827;
+    background: #0F1E19;
+    border-bottom: 1px solid #39433f;
+    box-shadow: inset 0 -6px 14px rgba(0, 0, 0, 0.12);
 }
 
 .filter-list,
@@ -103,15 +109,84 @@
 .filter-button,
 .category-button {
     min-width: 84px;
+    min-height: 36px;
     padding: 8px 14px;
+    border: 1px solid transparent;
     border-radius: 15px;
     background: #48504f;
     color: #ffffff;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.filter-button:hover,
+.category-button:hover {
+    border-color: #7b8c86;
+    background: #5b6964;
+    box-shadow: 0 5px 12px rgba(7, 29, 19, 0.2);
+    transform: translateY(-2px);
+}
+
+.filter-button:focus-visible,
+.category-button:focus-visible {
+    outline: 3px solid #b8f1ca;
+    outline-offset: 3px;
 }
 
 .filter-button-active,
 .category-button-active {
     background: #168b46;
+    border-color: #48d776;
+    box-shadow: 0 5px 12px rgba(9, 113, 53, 0.35);
+}
+
+.filter-button-active:hover,
+.category-button-active:hover {
+    background: #0d7a39;
+}
+
+.vendor-filter-more {
+    position: relative;
+}
+
+.vendor-filter-more-button {
+    list-style: none;
+}
+
+.vendor-filter-more-button::-webkit-details-marker {
+    display: none;
+}
+
+.vendor-filter-more-button::after {
+    content: '+';
+    margin-left: 8px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.vendor-filter-more[open] .vendor-filter-more-button::after {
+    content: '-';
+}
+
+.vendor-filter-more-panel {
+    position: absolute;
+    z-index: 2;
+    top: calc(100% + 10px);
+    right: 0;
+    display: grid;
+    width: 240px;
+    max-height: 280px;
+    gap: 8px;
+    overflow-y: auto;
+    padding: 12px;
+    border: 1px solid #63716d;
+    border-radius: 8px;
+    background: #202827;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
+.vendor-filter-more-panel .filter-button {
+    width: 100%;
+    justify-content: flex-start;
 }
 
 .consumer-listings {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FoodListing;
 use App\Models\Reservation;
+use App\Models\VendorOutlet;
 use App\Services\ReservationService;
 
 class ConsumerController extends Controller
@@ -19,15 +20,61 @@ class ConsumerController extends Controller
     // shows active (instock & not expired) food listings from FoodListing and VendorOutlet in consumer/dashboard.blade
     public function dashboard()
     {
-        $foodListings = FoodListing::with('vendorOutlet')
-            ->where('status', 'active')
-            ->where('quantity', '>', 0)
-            ->where('expiry_time', '>', now())
+        // Reads the selected vendor outlet ID and category from the dashboard filter links.
+        $selectedVendorOutletId = request('outlet');
+        $selectedCategory = request('category');
+
+        $foodListingQuery = $this->getAvailableFoodListingQuery()
+            ->with('vendorOutlet');
+
+        if ($selectedVendorOutletId) {
+            $foodListingQuery->where('vendor_outlet_id', $selectedVendorOutletId);
+        }
+
+        if ($selectedCategory) {
+            $foodListingQuery->where('category', $selectedCategory);
+        }
+
+        $foodListings = $foodListingQuery
             ->orderBy('expiry_time')
             ->get();
 
+        // Supplies the vendor buttons from the vendor_outlets table.
+        $vendorOutlets = VendorOutlet::orderBy('outlet_name')->get();
+
+        // Keeps the main filter row compact when many vendor outlets are registered.
+        $primaryVendorOutlets = $vendorOutlets->take(8);
+        $additionalVendorOutlets = $vendorOutlets->skip(8);
+        $selectedAdditionalVendorOutlet = null;
+
+        foreach ($additionalVendorOutlets as $additionalVendorOutlet) {
+            if ($selectedVendorOutletId == $additionalVendorOutlet->id) {
+                $selectedAdditionalVendorOutlet = $additionalVendorOutlet;
+                break;
+            }
+        }
+
+        // Supplies category buttons only from food that is currently available to reserve.
+        $categoryQuery = $this->getAvailableFoodListingQuery();
+
+        if ($selectedVendorOutletId) {
+            $categoryQuery->where('vendor_outlet_id', $selectedVendorOutletId);
+        }
+
+        $categories = $categoryQuery
+            ->select('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
+
         return view('consumer.dashboard', [
             'foodListings' => $foodListings,
+            'primaryVendorOutlets' => $primaryVendorOutlets,
+            'additionalVendorOutlets' => $additionalVendorOutlets,
+            'selectedAdditionalVendorOutlet' => $selectedAdditionalVendorOutlet,
+            'categories' => $categories,
+            'selectedVendorOutletId' => $selectedVendorOutletId,
+            'selectedCategory' => $selectedCategory,
         ]);  // dashboard.blade
     }
 
@@ -138,5 +185,14 @@ class ConsumerController extends Controller
         }
 
         return $reservationQuery;
+    }
+
+    // Builds the shared query for food that is active, has quantity, and has not passed its expiry time
+    // This is used by the dashboard food grid and the category filter buttons
+    private function getAvailableFoodListingQuery()
+    {
+        return FoodListing::where('status', 'active')
+            ->where('quantity', '>', 0)
+            ->where('expiry_time', '>', now());
     }
 }
