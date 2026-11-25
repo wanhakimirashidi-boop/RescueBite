@@ -6,6 +6,7 @@ use App\Models\FoodListing;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\VendorOutlet;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -74,12 +75,10 @@ class AdminController extends Controller
         ]);
     }
 
-    // Blocks or unblocks users
+    // function is called when admin click "Block" or "Unblock" button in admin/users.blade and it refer to web.php PATCH then opens this function
+    // e.g; "block" button clicked, it will change/toggle current user is_blocked status 
     public function toggleUserBlock(User $user)
     {
-        // this function is called when admin click "Block" or "Unblock" button in admin/users.blade and it refer to web.php PATCH then opens this function
-        // e.g; "block" button clicked, it will change/toggle current user is_blocked status 
-
         if ($user->role === 'admin') {
             return back()->with('error', 'Admin accounts cannot be blocked.');
         }
@@ -319,5 +318,275 @@ class AdminController extends Controller
 
         return 'admin-category-tile-default';
     }
+    // END OF ADMIN ANALYTICS SECTION
+
+
+
+    // START OF ADMIN REPORTS SECTION
+    // this function is called when admin clicks "Reports" tab or submits filters in admin/reports.blade, referring to web.php GET (/admin/reports)
+    public function reports(Request $request)
+    {
+        $filters = $this->getValidatedReportFilters($request);  // from function below. To validate the date & outlet filters shared by reports, print PDF, and CSV export
+
+        $summaryStatistics = $this->getSummaryStatistics();
+        $vendorOutlets = VendorOutlet::orderBy('outlet_name')->get();
+        $reportData = $this->buildReportData($filters['fromDate'], $filters['toDate'], $filters['selectedOutletId']);
+
+        return view('admin.reports', [
+            'summaryStatistics' => $summaryStatistics,
+            'vendorOutlets' => $vendorOutlets,
+            'reportData' => $reportData,
+            'fromDate' => $filters['fromDate'],
+            'toDate' => $filters['toDate'],
+            'selectedOutletId' => $filters['selectedOutletId'],
+        ]);
+    }
+
+    // this function is called when admin clicks "Export As PDF" in admin/reports.blade, referring to web.php GET (/admin/reports/print)
+    public function printReport(Request $request)
+    {
+        $filters = $this->getValidatedReportFilters($request);
+        $reportData = $this->buildReportData($filters['fromDate'], $filters['toDate'], $filters['selectedOutletId']);
+
+        return view('admin.reports-print', [
+            'reportData' => $reportData,
+            'fromDate' => $filters['fromDate'],
+            'toDate' => $filters['toDate'],
+        ]);
+    }
+
+    // this function is called when admin clicks "Export As Excel" in admin/reports.blade, referring to web.php GET (/admin/reports/export-csv)
+    public function exportReportCsv(Request $request)
+    {
+        $filters = $this->getValidatedReportFilters($request);
+        $fromDate = $filters['fromDate'];
+        $toDate = $filters['toDate'];
+        $reportData = $this->buildReportData($fromDate, $toDate, $filters['selectedOutletId']);
+
+        $fromDateLabel = 'All dates';
+        if ($fromDate) {
+            $fromDateLabel = $fromDate;
+        }
+
+        $toDateLabel = 'All dates';
+        if ($toDate) {
+            $toDateLabel = $toDate;
+        }
+
+        return response()->streamDownload(function () use ($reportData, $fromDateLabel, $toDateLabel) {
+            $fileHandle = fopen('php://output', 'w');
+
+            fputcsv($fileHandle, ['RescueBite Waste Reduction Report']);
+            fputcsv($fileHandle, ['Outlet Filter', $reportData['selectedOutletName']]);
+            fputcsv($fileHandle, ['From Date', $fromDateLabel]);
+            fputcsv($fileHandle, ['To Date', $toDateLabel]);
+            fputcsv($fileHandle, []);
+
+            fputcsv($fileHandle, ['Summary Metric', 'Value']);
+            fputcsv($fileHandle, ['Items Rescued (Claimed)', $reportData['itemsRescued']]);
+            fputcsv($fileHandle, ['Active Vendors', $reportData['activeVendorsCount']]);
+            fputcsv($fileHandle, ['Overall Savings (RM)', number_format($reportData['overallSavings'], 2, '.', '')]);
+            fputcsv($fileHandle, ['Expired Reservations', $reportData['expiredReservationsCount']]);
+            fputcsv($fileHandle, ['Unsold Food Wasted (Qty)', $reportData['unsoldFoodWasted']]);
+            fputcsv($fileHandle, []);
+
+            fputcsv($fileHandle, ['Outlet', 'Location', 'Items Rescued', 'Expired Reservations', 'Unsold Food Wasted', 'Total Savings (RM)']);
+
+            foreach ($reportData['outletBreakdown'] as $outletRow) {
+                fputcsv($fileHandle, [
+                    $outletRow['outletName'],
+                    $outletRow['outletLocation'],
+                    $outletRow['itemsRescued'],
+                    $outletRow['expiredReservations'],
+                    $outletRow['unsoldFoodWasted'],
+                    number_format($outletRow['totalSavings'], 2, '.', ''),
+                ]);
+            }
+
+            fclose($fileHandle);
+        }, 'rescuebite-waste-report.csv', [
+            'Content-Type' => 'text/csv',
+        ]);
+    }
+
+    // Validates and reads date & outlet filters shared by; reports, print PDF, and CSV export
+    private function getValidatedReportFilters(Request $request)
+    {
+        // 'from_date' & etc came from admin/report.blade "name="from_date"" || and checks for those conditions
+        $validated = $request->validate([
+            'from_date' => ['nullable', 'date'],
+            'to_date' => ['nullable', 'date', 'after_or_equal:from_date'],
+            'outlet_id' => ['nullable', 'exists:vendor_outlets,id'],
+        ]);
+
+        $fromDate = null;
+        $toDate = null;
+        $selectedOutletId = null;
+
+        // isset checks 2 things at once
+        // e.g; Does 'from_date' exist in the $validated array, and is it not null
+        if (isset($validated['from_date'])) {
+            $fromDate = $validated['from_date'];
+        }
+
+        if (isset($validated['to_date'])) {
+            $toDate = $validated['to_date'];
+        }
+
+        if (isset($validated['outlet_id'])) {
+            $selectedOutletId = $validated['outlet_id'];
+        }
+
+        return [
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'selectedOutletId' => $selectedOutletId,
+        ];
+    }
+
+    // FOR "Outlet Savings & Waste Breakdown" SECTION
+    // Builds filtered waste reduction totals and per outlet savings for; Reports, Print PDF, and CSV Export
+    private function buildReportData($fromDate, $toDate, $selectedOutletId)
+    {
+        $claimedQuery = Reservation::with(['foodListing.vendorOutlet'])
+            ->where('status', 'claimed');
+
+        $expiredReservationQuery = Reservation::with(['foodListing.vendorOutlet'])
+            ->where('status', 'expired');
+
+        $expiredListingQuery = FoodListing::with('vendorOutlet')
+            ->where('status', 'expired');
+
+        if ($fromDate) {
+            $startOfRange = Carbon::parse($fromDate)->startOfDay();
+            $claimedQuery->where('claimed_at', '>=', $startOfRange);
+            $expiredReservationQuery->where('updated_at', '>=', $startOfRange);
+            $expiredListingQuery->where('expiry_time', '>=', $startOfRange);
+        }
+
+        if ($toDate) {
+            $endOfRange = Carbon::parse($toDate)->endOfDay();
+            $claimedQuery->where('claimed_at', '<=', $endOfRange);
+            $expiredReservationQuery->where('updated_at', '<=', $endOfRange);
+            $expiredListingQuery->where('expiry_time', '<=', $endOfRange);
+        }
+
+        if ($selectedOutletId) {
+            $claimedQuery->whereHas('foodListing', function ($foodListingQuery) use ($selectedOutletId) {
+                $foodListingQuery->where('vendor_outlet_id', $selectedOutletId);
+            });
+
+            $expiredReservationQuery->whereHas('foodListing', function ($foodListingQuery) use ($selectedOutletId) {
+                $foodListingQuery->where('vendor_outlet_id', $selectedOutletId);
+            });
+
+            $expiredListingQuery->where('vendor_outlet_id', $selectedOutletId);
+        }
+
+        $claimedReservations = $claimedQuery->get();
+        $expiredReservations = $expiredReservationQuery->get();
+        $expiredListings = $expiredListingQuery->get();
+
+        $itemsRescued = $claimedReservations->count();
+        $expiredReservationsCount = $expiredReservations->count();
+        $unsoldFoodWasted = 0;
+
+        foreach ($expiredListings as $expiredListing) {
+            $unsoldFoodWasted += $expiredListing->quantity;
+        }
+
+        $overallSavings = 0;
+        $activeVendorIds = [];
+
+        foreach ($claimedReservations as $claimedReservation) {
+            if ($claimedReservation->foodListing) {
+                $savingAmount = $claimedReservation->foodListing->original_price - $claimedReservation->foodListing->discounted_price;
+
+                if ($savingAmount > 0) {
+                    $overallSavings += $savingAmount;
+                }
+
+                $activeVendorIds[$claimedReservation->foodListing->vendor_outlet_id] = true;
+            }
+        }
+
+        // Also count outlets that had active listings in the selected filter.
+        $activeListingsQuery = FoodListing::where('status', 'active')
+            ->where('quantity', '>', 0)
+            ->where('expiry_time', '>', now());
+
+        if ($selectedOutletId) {
+            $activeListingsQuery->where('vendor_outlet_id', $selectedOutletId);
+        }
+
+        foreach ($activeListingsQuery->get() as $activeListing) {
+            $activeVendorIds[$activeListing->vendor_outlet_id] = true;
+        }
+
+        // Build per-outlet savings breakdown for the selected outlet (or all outlets).
+        $outletQuery = VendorOutlet::orderBy('outlet_name');
+
+        if ($selectedOutletId) {
+            $outletQuery->where('id', $selectedOutletId);
+        }
+
+        $outlets = $outletQuery->get();
+        $selectedOutletName = 'All outlets';
+
+        if ($selectedOutletId && $outlets->count() > 0) {
+            $selectedOutletName = $outlets->first()->outlet_name;
+        }
+
+        $outletBreakdown = [];
+
+        foreach ($outlets as $outlet) {
+            $outletRescued = 0;
+            $outletSavings = 0;
+            $outletExpiredReservations = 0;
+            $outletUnsoldWasted = 0;
+
+            foreach ($claimedReservations as $claimedReservation) {
+                if ($claimedReservation->foodListing && $claimedReservation->foodListing->vendor_outlet_id === $outlet->id) {
+                    $outletRescued++;
+                    $savingAmount = $claimedReservation->foodListing->original_price - $claimedReservation->foodListing->discounted_price;
+
+                    if ($savingAmount > 0) {
+                        $outletSavings += $savingAmount;
+                    }
+                }
+            }
+
+            foreach ($expiredReservations as $expiredReservation) {
+                if ($expiredReservation->foodListing && $expiredReservation->foodListing->vendor_outlet_id === $outlet->id) {
+                    $outletExpiredReservations++;
+                }
+            }
+
+            foreach ($expiredListings as $expiredListing) {
+                if ($expiredListing->vendor_outlet_id === $outlet->id) {
+                    $outletUnsoldWasted += $expiredListing->quantity;
+                }
+            }
+
+            $outletBreakdown[] = [
+                'outletName' => $outlet->outlet_name,
+                'outletLocation' => $outlet->outlet_location,
+                'itemsRescued' => $outletRescued,
+                'expiredReservations' => $outletExpiredReservations,
+                'unsoldFoodWasted' => $outletUnsoldWasted,
+                'totalSavings' => $outletSavings,
+            ];
+        }
+
+        return [
+            'selectedOutletName' => $selectedOutletName,
+            'itemsRescued' => $itemsRescued,
+            'activeVendorsCount' => count($activeVendorIds),
+            'overallSavings' => $overallSavings,
+            'expiredReservationsCount' => $expiredReservationsCount,
+            'unsoldFoodWasted' => $unsoldFoodWasted,
+            'outletBreakdown' => $outletBreakdown,
+        ];
+    }
+    // END OF ADMIN REPORTS SECTION
 }
-// END OF ADMIN ANALYTICS SECTION

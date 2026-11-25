@@ -666,6 +666,119 @@
     white-space: nowrap;
 }
 
+.admin-report-card {
+    margin-bottom: 24px;
+}
+
+.admin-report-form {
+    margin-bottom: 22px;
+}
+
+.admin-report-filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.admin-report-filter-actions,
+.admin-report-export-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.admin-secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border: 1px solid #56635e;
+    border-radius: 8px;
+    background: #3b4441;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.admin-secondary-button:hover {
+    background: #4b5652;
+}
+
+.admin-report-preview {
+    padding: 22px;
+    margin-bottom: 20px;
+    border: 1px solid #483d63;
+    border-radius: 12px;
+    background: #302840;
+}
+
+.admin-report-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.admin-report-preview-header h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+.admin-report-preview-header span {
+    padding: 4px 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e4d4ff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-report-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.admin-report-metric strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 28px;
+}
+
+.admin-report-metric span {
+    color: #cfc6df;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-report-waste-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: #d6cee6;
+    font-size: 13px;
+}
+
+.admin-report-export-actions {
+    justify-content: center;
+}
+
+.admin-report-export-actions .admin-submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media (max-width: 960px) {
     .admin-statistics {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -673,7 +786,9 @@
 
     .admin-analytics-grid,
     .admin-waste-grid,
-    .admin-form-grid {
+    .admin-form-grid,
+    .admin-report-filters,
+    .admin-report-preview-grid {
         grid-template-columns: 1fr;
     }
 }

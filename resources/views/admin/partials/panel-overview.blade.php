@@ -49,7 +49,11 @@
                 <a class="admin-tab" href="{{ route('admin.users') }}">Users</a>
             @endif
 
-            <span class="admin-tab admin-tab-disabled" title="Coming in next step">Reports</span>
+            @if ($currentTab === 'reports')
+                <a class="admin-tab admin-tab-active" href="{{ route('admin.reports') }}">Reports</a>
+            @else
+                <a class="admin-tab" href="{{ route('admin.reports') }}">Reports</a>
+            @endif
         </nav>
     </div>
 </section>

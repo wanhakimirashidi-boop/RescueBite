@@ -99,6 +99,21 @@ Route::post('/admin/users/grant-vendor', [AdminController::class, 'grantVendorAc
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users.grant-vendor');
 
+// Admin routes - Reports and waste reduction export section
+Route::get('/admin/reports', [AdminController::class, 'reports'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports');
+
+// Admin routes - Print report page
+Route::get('/admin/reports/print', [AdminController::class, 'printReport'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.print');
+
+// Admin routes - Export report to CSV
+Route::get('/admin/reports/export-csv', [AdminController::class, 'exportReportCsv'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.export-csv');
+
 
 
 // LARAVEL BREEZE - Profile routes (for user account management)
