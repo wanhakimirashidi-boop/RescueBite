@@ -29,7 +29,7 @@ class Reservation extends Model
 
     public function foodListing(): BelongsTo
     {
-        return $this->belongsTo(FoodListing::class);
+        return $this->belongsTo(FoodListing::class); 
     }
 
 }

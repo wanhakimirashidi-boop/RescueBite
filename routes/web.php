@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -70,6 +71,13 @@ Route::get('/vendor/verify-code', [VendorController::class, 'showVerifyCode'])
 Route::post('/vendor/verify-code', [VendorController::class, 'verifyCode'])
     ->middleware(['auth', 'verified', 'role:vendor'])
     ->name('vendor.verify-code.store');
+
+
+
+// Admin routes - Dashboard and analytics section
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.dashboard');
 
 
 

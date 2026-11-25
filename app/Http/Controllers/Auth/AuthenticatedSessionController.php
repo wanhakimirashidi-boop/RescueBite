@@ -28,12 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // ->intended = logout user tries to go back to the page
         if ($request->user()->role === 'vendor') {
             return redirect()->intended(route('vendor.dashboard'));
         }
 
         if ($request->user()->role === 'admin') {
-            return redirect('/');
+            return redirect()->intended(route('admin.dashboard'));
         }
 
         return redirect()->intended(route('dashboard'));

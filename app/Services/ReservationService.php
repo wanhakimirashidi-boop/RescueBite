@@ -41,7 +41,7 @@ class ReservationService
         return $reservation;
     }
 
-    // Creates short code thats different from other codes
+    // Creates short pickup code thats different from other codes
     private function generateVerifyCode()
     {
         do {
