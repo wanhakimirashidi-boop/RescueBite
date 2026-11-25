@@ -301,6 +301,11 @@
     white-space: nowrap;
 }
 
+.admin-table th.admin-cell-center,
+.admin-table td.admin-cell-center {
+    text-align: center;
+}
+
 .admin-empty-cell,
 .admin-empty-note {
     color: #a8b7b1;

@@ -16,6 +16,7 @@
             <article class="admin-statistic">
                 <span>Total Users</span>            {{-- %summaryStatistic is from AdminController.php (dashboard function)--}}
                 <strong class="admin-statistic-white">{{ $summaryStatistics['totalUsers'] }}</strong>
+                <small>{{ $summaryStatistics['consumerCount'] }} Consumers | {{ $summaryStatistics['vendorCount'] }} Vendors</small>
             </article>                               {{--totalUsers from AdminController.php -> "return [...]]" (getSummaryStatistics function)--}}
             <article class="admin-statistic">
                 <span>Food Rescued</span>

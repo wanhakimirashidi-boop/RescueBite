@@ -28,21 +28,23 @@ class AdminController extends Controller
         ]);
     }
 
-    // Builds the 4 top KPI cards shown across the Admin Panel (Total Users, Food Rescued, Active Listing, Total Savings).
+    // 4 Cards at very top (Total Users, Food Rescued, Active Listing, Total Savings).
     private function getSummaryStatistics()
     {
-        // count total number of USERS in the system
-        $totalUsers = User::count();
+        // count total USERS (excluding admin)
+        $consumerCount = User::where('role', 'consumer')->count();
+        $vendorCount = User::where('role', 'vendor')->count();
+        $totalUsers = $consumerCount + $vendorCount;
 
         // count total number of CLAIMED reservations & calculate TOTAL SAVINGS from claimed reservations
         $claimedReservations = Reservation::with('foodListing') //foodListing = Reservation.php
             ->where('status', 'claimed')
             ->get();
 
-        // count total number of CLAIMED reservations
+        // count total number of "FOOD RESCUED"
         $foodRescuedCount = $claimedReservations->count();
 
-        // count total number of ACTIVE LISTING that are not expired
+        // count total number of "ACTIVE LISTING" that are not expired
         $activeListingCount = FoodListing::where('status', 'active')
             ->where('quantity', '>', 0)
             ->where('expiry_time', '>', now())
@@ -52,7 +54,7 @@ class AdminController extends Controller
         // calculate total SAVINGS from claimed reservations
         $totalSavings = 0;
 
-        // Formula: $totalSavings = (original price - discounted price) for each claimed reservation
+        // Formula for Total Savings card: $totalSavings = (original price - discounted price) for each claimed reservation
         foreach ($claimedReservations as $claimedReservation) {
             if ($claimedReservation->foodListing) {
                 $savingAmount = $claimedReservation->foodListing->original_price - $claimedReservation->foodListing->discounted_price;
@@ -65,6 +67,8 @@ class AdminController extends Controller
 
         return [
             'totalUsers' => $totalUsers,
+            'consumerCount' => $consumerCount,
+            'vendorCount' => $vendorCount,
             'foodRescuedCount' => $foodRescuedCount,
             'activeListingCount' => $activeListingCount,
             'totalSavings' => $totalSavings,

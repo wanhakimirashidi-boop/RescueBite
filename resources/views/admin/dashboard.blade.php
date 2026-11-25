@@ -21,18 +21,18 @@
                             <thead>
                                 <tr>
                                     <th>Vendor</th>
-                                    <th>Total Listed</th>
-                                    <th>In Stock</th>
-                                    <th>Sold Out</th>
+                                    <th class="admin-cell-center">Total Listed</th>
+                                    <th class="admin-cell-center">In Stock</th>
+                                    <th class="admin-cell-center">Ended / Sold Out</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($vendorBreakdown as $vendorOutlet)
                                     <tr>
                                         <td class="admin-cell-strong">{{ $vendorOutlet->outlet_name }}</td>
-                                        <td class="admin-cell-purple">{{ $vendorOutlet->total_listed }}</td>
-                                        <td class="admin-cell-green">{{ $vendorOutlet->in_stock_count }}</td>
-                                        <td class="admin-cell-red">{{ $vendorOutlet->sold_out_count }}</td>
+                                        <td class="admin-cell-purple admin-cell-center">{{ $vendorOutlet->total_listed }}</td>
+                                        <td class="admin-cell-green admin-cell-center">{{ $vendorOutlet->in_stock_count }}</td>
+                                        <td class="admin-cell-red admin-cell-center">{{ $vendorOutlet->sold_out_count }}</td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -43,6 +43,7 @@
                         </table>
                     </div>
 
+                    {{-- refer to pagination.blade --}}
                     @include('admin.partials.pagination', ['records' => $vendorBreakdown, 'paginationLabel' => 'Vendor breakdown pages'])
                 </section>
 
@@ -169,6 +170,7 @@
                     </table>
                 </div>
 
+                {{-- refer to pagination.blade --}}
                 @include('admin.partials.pagination', ['records' => $recentReservations, 'paginationLabel' => 'Recent reservations pages'])
             </section>
         </div>
