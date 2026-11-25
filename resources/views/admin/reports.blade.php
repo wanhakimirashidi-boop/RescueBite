@@ -79,6 +79,7 @@
                     </div>
 
                     <div class="admin-report-waste-row">
+                        <span>Recovered Revenue: <strong class="admin-cell-green">RM {{ number_format($reportData['overallRevenue'], 2) }}</strong></span>
                         <span>Expired Reservations: <strong class="admin-cell-red">{{ $reportData['expiredReservationsCount'] }}</strong></span>
                         <span>Unsold Food Wasted: <strong class="admin-cell-red">{{ $reportData['unsoldFoodWasted'] }}</strong></span>
                     </div>
@@ -104,6 +105,8 @@
                                 <th class="admin-cell-center">Items Rescued</th>
                                 <th class="admin-cell-center">Expired Reservations</th>
                                 <th class="admin-cell-center">Unsold Food Wasted</th>
+                                <th class="admin-cell-center">Rescue Rate</th>
+                                <th class="admin-cell-center">Recovered Revenue</th>
                                 <th class="admin-cell-center">Total Savings</th>
                             </tr>
                         </thead>
@@ -117,11 +120,13 @@
                                     <td class="admin-cell-green admin-cell-center">{{ $outletRow['itemsRescued'] }}</td>
                                     <td class="admin-cell-red admin-cell-center">{{ $outletRow['expiredReservations'] }}</td>
                                     <td class="admin-cell-red admin-cell-center">{{ $outletRow['unsoldFoodWasted'] }}</td>
+                                    <td class="admin-cell-purple admin-cell-center">{{ $outletRow['rescueRate'] }}%</td>
+                                    <td class="admin-cell-green admin-cell-center">RM {{ number_format($outletRow['recoveredRevenue'], 2) }}</td>
                                     <td class="admin-statistic-pink admin-cell-center"><strong>RM {{ number_format($outletRow['totalSavings'], 2) }}</strong></td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="admin-empty-cell">No vendor outlets found for this report.</td>
+                                    <td colspan="7" class="admin-empty-cell">No vendor outlets found for this report.</td>
                                 </tr>
                             @endforelse
                         </tbody>

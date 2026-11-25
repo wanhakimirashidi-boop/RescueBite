@@ -812,3 +812,125 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Printable PDF-ready Waste Reduction Report styles (reports-print.blade.php) */
+.admin-print-page {
+    margin: 0;
+    padding: 32px;
+    background: #ffffff;
+    color: #111827;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-print-sheet {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.admin-print-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #073d28;
+}
+
+.admin-print-header h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    color: #073d28;
+}
+
+.admin-print-meta {
+    margin: 0;
+    color: #4b5563;
+    font-size: 13px;
+}
+
+.admin-print-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-print-button,
+.admin-print-back-button {
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.admin-print-button {
+    background: #7230db;
+    color: #ffffff;
+}
+
+.admin-print-back-button {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.admin-print-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.admin-print-summary-box {
+    padding: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.admin-print-summary-box span {
+    display: block;
+    margin-bottom: 6px;
+    color: #4b5563;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.admin-print-summary-box strong {
+    font-size: 18px;
+}
+
+.admin-print-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.admin-print-table th,
+.admin-print-table td {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    text-align: left;
+}
+
+.admin-print-table th {
+    background: #f3f4f6;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.admin-print-table .admin-cell-center {
+    text-align: center;
+}
+
+@media print {
+    .admin-print-actions {
+        display: none;
+    }
+
+    .admin-print-page {
+        padding: 0;
+    }
+}

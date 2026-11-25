@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminReportController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -85,32 +87,32 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->name('admin.dashboard');
 
 // Admin routes - Users management section
-Route::get('/admin/users', [AdminController::class, 'users'])
+Route::get('/admin/users', [AdminUserController::class, 'users'])
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users');
 
 // Admin routes - Block or unblock users
-Route::patch('/admin/users/{user}/toggle-block', [AdminController::class, 'toggleUserBlock'])   // PATCH = update existing things
+Route::patch('/admin/users/{user}/toggle-block', [AdminUserController::class, 'toggleUserBlock'])   // PATCH = update existing things
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users.toggle-block');
 
 // Admin routes - Grant vendor access to consumer users
-Route::post('/admin/users/grant-vendor', [AdminController::class, 'grantVendorAccess'])     // POST = make new things
+Route::post('/admin/users/grant-vendor', [AdminUserController::class, 'grantVendorAccess'])     // POST = make new things
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users.grant-vendor');
 
 // Admin routes - Reports and waste reduction export section
-Route::get('/admin/reports', [AdminController::class, 'reports'])
+Route::get('/admin/reports', [AdminReportController::class, 'reports'])
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports');
 
 // Admin routes - Print report page
-Route::get('/admin/reports/print', [AdminController::class, 'printReport'])
+Route::get('/admin/reports/print', [AdminReportController::class, 'printReport'])
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.print');
 
 // Admin routes - Export report to CSV
-Route::get('/admin/reports/export-csv', [AdminController::class, 'exportReportCsv'])
+Route::get('/admin/reports/export-csv', [AdminReportController::class, 'exportReportCsv'])
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.export-csv');
 
