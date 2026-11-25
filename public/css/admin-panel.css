@@ -1,4 +1,4 @@
-/* Admin Panel Stylesheet - Matches Figma Admin UI Prototype and RescueBite theme */
+/* Admin Panel Stylesheet - Minimal, clean layout matching RescueBite theme and Figma prototype */
 
 .admin-page {
     min-height: 100vh;
@@ -12,8 +12,9 @@
 .admin-navigation,
 .admin-actions,
 .admin-hero-inner,
-.admin-statistics,
-.admin-tabs {
+.admin-tabs,
+.admin-pagination-bar,
+.admin-pagination {
     display: flex;
     align-items: center;
 }
@@ -52,20 +53,26 @@
     cursor: pointer;
     font-size: 13px;
     font-weight: 700;
+    transition: background 0.2s ease;
 }
 
 .admin-logout-button:hover {
     background: #63716d;
 }
 
+/* Matches consumer-hero and vendor-hero green background styling across RescueBite */
 .admin-hero {
-    padding: 46px 0;
-    background: radial-gradient(circle at 60% 50%, #105537 0%, #072d1e 48%, #041913 100%);
+    padding: 54px 0;
+    background-color: #073d28;
+    background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1800&q=85');
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: multiply;
     color: #ffffff;
 }
 
 .admin-hero-inner {
-    gap: 28px;
+    gap: 24px;
 }
 
 .admin-back-pill {
@@ -74,12 +81,13 @@
     justify-content: center;
     min-height: 36px;
     padding: 0 18px;
-    border: 1px solid #355849;
+    border: 1px solid #3c6553;
     border-radius: 18px;
-    background: rgba(15, 30, 25, 0.72);
+    background: rgba(6, 19, 30, 0.45);
     color: #ffffff;
     font-size: 13px;
     font-weight: 700;
+    transition: background 0.2s ease;
 }
 
 .admin-back-pill:hover {
@@ -88,7 +96,7 @@
 
 .admin-hero-title h1 {
     margin: 0 0 6px;
-    font-size: 40px;
+    font-size: 42px;
 }
 
 .admin-hero-title h1 span {
@@ -97,42 +105,41 @@
 
 .admin-hero-subtitle {
     margin: 0;
-    color: #a9c5b8;
+    color: #c9e2d1;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.08em;
 }
 
 .admin-overview {
-    padding: 36px 0 0;
+    padding: 40px 0 0;
 }
 
 .admin-tab-section {
-    padding: 0 0 72px;
+    padding: 0 0 76px;
 }
 
 .admin-statistics {
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 18px;
-    margin-bottom: 26px;
+    margin-bottom: 28px;
 }
 
 .admin-statistic {
-    width: 210px;
-    min-height: 112px;
-    padding: 18px 16px;
-    border-radius: 10px;
-    background: #2b2d2e;
+    padding: 22px 18px;
+    border: 1px solid #353f3c;
+    border-radius: 12px;
+    background: #232a28;
     color: #ffffff;
     text-align: center;
-    box-shadow: 0 8px 18px rgba(6, 19, 30, 0.14);
+    box-shadow: 0 8px 20px rgba(6, 19, 30, 0.1);
 }
 
 .admin-statistic span {
     display: block;
     margin-bottom: 10px;
-    color: #d4ded9;
+    color: #b7c4bf;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -141,13 +148,13 @@
 
 .admin-statistic strong {
     display: block;
-    font-size: 24px;
+    font-size: 26px;
 }
 
 .admin-statistic small {
     display: block;
     margin-top: 6px;
-    color: #9fb0a8;
+    color: #93a39d;
     font-size: 11px;
 }
 
@@ -169,8 +176,8 @@
 
 .admin-tabs {
     justify-content: center;
-    gap: 4px;
-    margin-bottom: 36px;
+    gap: 6px;
+    margin-bottom: 34px;
 }
 
 .admin-tab {
@@ -180,11 +187,12 @@
     min-width: 175px;
     min-height: 42px;
     padding: 0 20px;
-    border-radius: 6px;
-    background: #29312f;
+    border-radius: 8px;
+    background: #262f2c;
     color: #ffffff;
     font-size: 13px;
     font-weight: 700;
+    transition: background 0.2s ease;
 }
 
 .admin-tab-active {
@@ -192,7 +200,7 @@
 }
 
 .admin-tab-disabled {
-    opacity: 0.6;
+    opacity: 0.55;
     cursor: not-allowed;
 }
 
@@ -201,20 +209,22 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
     margin-bottom: 24px;
+    align-items: stretch;
 }
 
 .admin-card {
-    padding: 24px;
+    padding: 26px;
+    border: 1px solid #353f3c;
     border-radius: 14px;
-    background: #2f3132;
+    background: #232a28;
     color: #ffffff;
-    box-shadow: 0 10px 24px rgba(6, 19, 30, 0.16);
+    box-shadow: 0 8px 22px rgba(6, 19, 30, 0.12);
 }
 
 .admin-card-header {
     padding-bottom: 14px;
     margin-bottom: 18px;
-    border-bottom: 1px solid #494e4f;
+    border-bottom: 1px solid #394440;
 }
 
 .admin-card-header h2 {
@@ -224,7 +234,7 @@
 
 .admin-card-header p {
     margin: 0;
-    color: #b7c2be;
+    color: #a8b7b1;
     font-size: 12px;
 }
 
@@ -240,20 +250,29 @@
 
 .admin-table th,
 .admin-table td {
-    padding: 12px 10px;
-    border-bottom: 1px solid #444849;
+    padding: 13px 10px;
+    border-bottom: 1px solid #343e3b;
     text-align: left;
 }
 
 .admin-table th {
-    color: #b7c2be;
+    color: #a8b7b1;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
+.admin-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
 .admin-table tbody tr:last-child td {
     border-bottom: 0;
+}
+
+.admin-cell-strong {
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .admin-cell-purple {
@@ -276,9 +295,15 @@
     font-weight: 700;
 }
 
+.admin-cell-muted {
+    color: #a8b7b1;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
 .admin-empty-cell,
 .admin-empty-note {
-    color: #b7c2be;
+    color: #a8b7b1;
     font-size: 13px;
 }
 
@@ -289,7 +314,7 @@
 }
 
 .admin-category-tile {
-    padding: 14px 16px;
+    padding: 18px 16px;
     border-radius: 10px;
     color: #ffffff;
 }
@@ -299,7 +324,7 @@
     margin-bottom: 10px;
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
 }
 
 .admin-category-numbers {
@@ -309,7 +334,7 @@
 }
 
 .admin-category-numbers strong {
-    font-size: 20px;
+    font-size: 22px;
 }
 
 .admin-category-numbers span {
@@ -318,23 +343,23 @@
 }
 
 .admin-category-tile-pastries {
-    background: #6ea8ba;
+    background: #5b93a5;
 }
 
 .admin-category-tile-food {
-    background: #c89d54;
+    background: #b68c46;
 }
 
 .admin-category-tile-snacks {
-    background: #9f6fb3;
+    background: #8c5ea0;
 }
 
 .admin-category-tile-drinks {
-    background: #4e9a78;
+    background: #428969;
 }
 
 .admin-category-tile-default {
-    background: #556468;
+    background: #4e5d61;
 }
 
 .admin-waste-card {
@@ -348,28 +373,23 @@
 }
 
 .admin-waste-metric {
-    padding: 14px;
+    padding: 18px 14px;
     border-radius: 10px;
-    background: #242627;
+    background: #1b211f;
     text-align: center;
 }
 
 .admin-waste-metric span {
     display: block;
-    margin-bottom: 8px;
-    color: #b7c2be;
+    margin-bottom: 10px;
+    color: #a8b7b1;
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
 }
 
 .admin-waste-metric strong {
-    font-size: 20px;
-}
-
-.admin-reservations-card {
-    max-width: 780px;
-    margin: 0 auto;
+    font-size: 22px;
 }
 
 .admin-status-badge {
@@ -396,7 +416,65 @@
     background: #dc2626;
 }
 
-@media (max-width: 900px) {
+.admin-pagination-bar {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid #343e3b;
+}
+
+.admin-pagination-info {
+    color: #a8b7b1;
+    font-size: 12px;
+}
+
+.admin-pagination {
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.admin-pagination-button,
+.admin-pagination-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    min-height: 32px;
+    padding: 0 10px;
+    border: 1px solid #3e4a46;
+    border-radius: 6px;
+    background: #1b211f;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-pagination-button:hover,
+.admin-pagination-page:hover {
+    background: #303936;
+}
+
+.admin-pagination-current {
+    border-color: #7230db;
+    background: #7230db;
+}
+
+.admin-pagination-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.admin-pagination-disabled:hover {
+    background: #1b211f;
+}
+
+@media (max-width: 960px) {
+    .admin-statistics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .admin-analytics-grid,
     .admin-waste-grid {
         grid-template-columns: 1fr;
@@ -406,7 +484,8 @@
 @media (max-width: 640px) {
     .admin-navigation,
     .admin-hero-inner,
-    .admin-tabs {
+    .admin-tabs,
+    .admin-pagination-bar {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -416,6 +495,7 @@
         gap: 10px;
     }
 
+    .admin-statistics,
     .admin-category-grid {
         grid-template-columns: 1fr;
     }

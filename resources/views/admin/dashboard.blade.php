@@ -13,7 +13,7 @@
                 <section class="admin-card" aria-labelledby="vendor-breakdown-title">
                     <div class="admin-card-header">
                         <h2 id="vendor-breakdown-title">Vendor Breakdown</h2>
-                        <p>Total Listing Per Vendor</p>
+                        <p>Total listings per vendor</p>
                     </div>
 
                     <div class="admin-table-wrapper">
@@ -27,12 +27,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($vendorBreakdown as $vendorRow)
+                                @forelse ($vendorBreakdown as $vendorOutlet)
                                     <tr>
-                                        <td>{{ $vendorRow['outletName'] }}</td>
-                                        <td class="admin-cell-purple">{{ $vendorRow['totalListed'] }}</td>
-                                        <td class="admin-cell-green">{{ $vendorRow['inStockCount'] }}</td>
-                                        <td class="admin-cell-red">{{ $vendorRow['soldOutCount'] }}</td>
+                                        <td class="admin-cell-strong">{{ $vendorOutlet->outlet_name }}</td>
+                                        <td class="admin-cell-purple">{{ $vendorOutlet->total_listed }}</td>
+                                        <td class="admin-cell-green">{{ $vendorOutlet->in_stock_count }}</td>
+                                        <td class="admin-cell-red">{{ $vendorOutlet->sold_out_count }}</td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -42,12 +42,14 @@
                             </tbody>
                         </table>
                     </div>
+
+                    @include('admin.partials.pagination', ['records' => $vendorBreakdown, 'paginationLabel' => 'Vendor breakdown pages'])
                 </section>
 
                 <section class="admin-card" aria-labelledby="category-breakdown-title">
                     <div class="admin-card-header">
                         <h2 id="category-breakdown-title">Category Breakdown</h2>
-                        <p>Food Count By Category</p>
+                        <p>Food count by category</p>
                     </div>
 
                     <div class="admin-category-grid">
@@ -69,7 +71,7 @@
             <section class="admin-card admin-waste-card" aria-labelledby="waste-analytics-title">
                 <div class="admin-card-header">
                     <h2 id="waste-analytics-title">Waste &amp; Rescue Analytics</h2>
-                    <p>Claimed, Unclaimed, and Expired Overview</p>
+                    <p>Claimed, unclaimed, and expired overview</p>
                 </div>
 
                 <div class="admin-waste-grid">
@@ -90,13 +92,13 @@
                         <strong class="admin-cell-red">{{ $wasteAnalytics['expiredListingCount'] }} ({{ $wasteAnalytics['expiredQuantityLeft'] }})</strong>
                     </article>
                     <article class="admin-waste-metric">
-                        <span>Pickup Completion Rate</span>
+                        <span>Pickup Completion</span>
                         <strong class="admin-cell-purple">{{ $wasteAnalytics['rescueRate'] }}%</strong>
                     </article>
                 </div>
             </section>
 
-            <section class="admin-card admin-reservations-card" aria-labelledby="recent-reservations-title">
+            <section class="admin-card" aria-labelledby="recent-reservations-title">
                 <div class="admin-card-header">
                     <h2 id="recent-reservations-title">Recent Reservations</h2>
                     <p>Latest consumer pickup activity</p>
@@ -107,9 +109,11 @@
                         <thead>
                             <tr>
                                 <th>Code</th>
+                                <th>Consumer</th>
                                 <th>Item</th>
                                 <th>Outlet</th>
                                 <th>Price</th>
+                                <th>Reserved At</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -117,6 +121,13 @@
                             @forelse ($recentReservations as $reservation)
                                 <tr>
                                     <td class="admin-cell-green">{{ $reservation->verify_code }}</td>
+                                    <td>
+                                        @if ($reservation->consumer)
+                                            {{ $reservation->consumer->name }}
+                                        @else
+                                            Unknown user
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($reservation->foodListing)
                                             {{ $reservation->foodListing->item_name }}
@@ -138,6 +149,7 @@
                                             -
                                         @endif
                                     </td>
+                                    <td class="admin-cell-muted">{{ $reservation->created_at->format('d M Y, g:i A') }}</td>
                                     <td>
                                         @if ($reservation->status === 'claimed')
                                             <span class="admin-status-badge admin-status-claimed">Claimed</span>
@@ -150,12 +162,14 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="admin-empty-cell">No reservations recorded yet.</td>
+                                    <td colspan="7" class="admin-empty-cell">No reservations recorded yet.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+
+                @include('admin.partials.pagination', ['records' => $recentReservations, 'paginationLabel' => 'Recent reservations pages'])
             </section>
         </div>
     </section>

@@ -9,7 +9,7 @@ use App\Models\VendorOutlet;
 
 class AdminController extends Controller
 {
-    // passes to admin/dashboard.blade
+    // Connected view: admin/dashboard.blade
     public function dashboard()
     {
         // variables from functions below
@@ -17,10 +17,7 @@ class AdminController extends Controller
         $vendorBreakdown = $this->getVendorBreakdown();
         $categoryBreakdown = $this->getCategoryBreakdown();
         $wasteAnalytics = $this->getWasteAnalytics();
-        $recentReservations = Reservation::with(['foodListing.vendorOutlet'])
-            ->orderByDesc('created_at')
-            ->limit(6)
-            ->get();
+        $recentReservations = $this->getRecentReservations();
 
         return view('admin.dashboard', [
             'summaryStatistics' => $summaryStatistics,
@@ -55,7 +52,7 @@ class AdminController extends Controller
         // calculate total SAVINGS from claimed reservations
         $totalSavings = 0;
 
-        // formula: $totalSavings = (original price - discounted price) for each claimed reservation
+        // Formula: $totalSavings = (original price - discounted price) for each claimed reservation
         foreach ($claimedReservations as $claimedReservation) {
             if ($claimedReservation->foodListing) {
                 $savingAmount = $claimedReservation->foodListing->original_price - $claimedReservation->foodListing->discounted_price;
@@ -77,15 +74,14 @@ class AdminController extends Controller
     // Summarizes how many listings each vendor outlet has created, how many are still in stock, and how many are sold out/ended
     private function getVendorBreakdown()
     {
-        // get all vendor outlets with their food listings
-        $vendorOutlets = VendorOutlet::with('foodListings')
+        // Separate pageName so paging Vendor Breakdown do not change Recent Reservations
+        $vendorBreakdown = VendorOutlet::with('foodListings')
             ->orderBy('outlet_name')
-            ->get();
-
-        $vendorBreakdown = [];
+            ->paginate(5, pageName: 'vendor_page')  //pageName = solution to not refresh entire table in single page
+            ->withQueryString();
 
         // Loop through each vendor outlet to calculate the total listings, in-stock listings, and sold-out listings
-        foreach ($vendorOutlets as $vendorOutlet) {
+        foreach ($vendorBreakdown as $vendorOutlet) {
             $totalListed = $vendorOutlet->foodListings->count();
             $inStockCount = 0;
 
@@ -102,12 +98,9 @@ class AdminController extends Controller
 
             $soldOutCount = $totalListed - $inStockCount;
 
-            $vendorBreakdown[] = [
-                'outletName' => $vendorOutlet->outlet_name,
-                'totalListed' => $totalListed,
-                'inStockCount' => $inStockCount,
-                'soldOutCount' => $soldOutCount,
-            ];
+            $vendorOutlet->total_listed = $totalListed;
+            $vendorOutlet->in_stock_count = $inStockCount;
+            $vendorOutlet->sold_out_count = $soldOutCount;
         }
 
         return $vendorBreakdown;
@@ -176,7 +169,17 @@ class AdminController extends Controller
         ];
     }
 
-    // assign food categories to CSS classes in admin-panel.css
+    // Gets recent reservations with consumer, food listing, and outlet details
+    private function getRecentReservations()
+    {
+        // Separate pageName so paging Recent Reservations does not change Vendor Breakdown
+        return Reservation::with(['consumer', 'foodListing.vendorOutlet'])
+            ->orderByDesc('created_at')
+            ->paginate(5, pageName: 'reservations_page')
+            ->withQueryString();
+    }
+
+    // Assign food categories to CSS classes in admin-panel.css
     private function getCategoryCardClass($categoryName)
     {
         $normalizedCategory = strtolower($categoryName);

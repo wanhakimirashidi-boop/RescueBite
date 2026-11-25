@@ -20,7 +20,7 @@
             <article class="admin-statistic">
                 <span>Food Rescued</span>
                 <strong class="admin-statistic-green">{{ $summaryStatistics['foodRescuedCount'] }}</strong>
-                <small>Items Claimed</small>
+                <small>(Items Claimed)</small>
             </article>
             <article class="admin-statistic">
                 <span>Active Listing</span>
@@ -29,7 +29,7 @@
             <article class="admin-statistic">
                 <span>Total Savings</span>
                 <strong class="admin-statistic-pink">RM {{ number_format($summaryStatistics['totalSavings'], 2) }}</strong>
-                <small>Original - discount, claimed only</small>
+                <small>(Original - discount, claimed only)</small>
             </article>
         </div>
 
