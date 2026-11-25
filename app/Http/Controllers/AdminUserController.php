@@ -66,16 +66,17 @@ class AdminUserController extends Controller
         // withQueryString() = keeps active search, filters, and sort when changing pages
         $users = $userQuery->paginate(10)->withQueryString();
 
-        // Active consumer eligible to be approved as vendors with an assigned outlet || refer to admin/users.blade (line 107 or search is_blocked)
-        $consumerUsers = User::where('role', 'consumer')
-            ->where('is_blocked', false)
-            ->orderBy('name')
-            ->get();
+        // Autofill Consumer Email when admin clicks "Make Vendor" on Users table
+        $selectedConsumerEmail = request('promote_email');
+
+        // Standardized location options for the Grant Vendor Access dropdown
+        $outletLocations = ['UPTEN', 'IOI City Mall', 'Bandar Baru Bangi', 'Seri Kembangan', 'Putrajaya', 'Others'];
 
         return view('admin.users', [
             'summaryStatistics' => $summaryStatistics,
             'users' => $users,
-            'consumerUsers' => $consumerUsers,
+            'selectedConsumerEmail' => $selectedConsumerEmail,
+            'outletLocations' => $outletLocations,
             'searchTerm' => $searchTerm,
             'selectedRole' => $selectedRole,
             'selectedStatus' => $selectedStatus,
@@ -143,15 +144,26 @@ class AdminUserController extends Controller
     }
 
     // this function is called when admin clicks "Approve as Vendor" button in admin/users.blade, referring to web.php POST (/admin/users/grant-vendor)
-    public function grantVendorAccess(Request $request) // Request $request = to get the form inputs from admin/users.blade (user_id, outlet_name, outlet_location)
+    public function grantVendorAccess(Request $request) // Request $request = to get the form inputs from admin/users.blade (consumer_email, outlet_name, outlet_location)
     {
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'outlet_name' => ['required', 'string', 'max:255'],
-            'outlet_location' => ['required', 'string', 'max:255'],
+            'consumer_email' => ['required', 'email', 'exists:users,email'],
+            'outlet_name' => ['required', 'string', 'max:255', 'unique:vendor_outlets,outlet_name'],
+            'outlet_location' => ['required', 'string', 'in:UPTEN,IOI City Mall,Bandar Baru Bangi,Seri Kembangan,Putrajaya,Others'],
+            'custom_outlet_location' => ['nullable', 'string', 'max:255', 'required_if:outlet_location,Others'],
         ]);
 
-        $selectedUser = User::findOrFail($validated['user_id']);
+        $finalOutletLocation = $validated['outlet_location'];
+
+        if ($validated['outlet_location'] === 'Others') {
+            $finalOutletLocation = trim($validated['custom_outlet_location']);
+        }
+
+        $selectedUser = User::where('email', $validated['consumer_email'])->firstOrFail();
+
+        if ($selectedUser->is_blocked) {
+            return back()->withInput()->with('error', 'Blocked accounts cannot be approved as a vendor.');
+        }
 
         if ($selectedUser->role !== 'consumer') {
             return back()->withInput()->with('error', 'Only consumer accounts can be upgraded to a vendor.');   //withInput() = keeps the form input values after redirect back to the form page
@@ -168,11 +180,35 @@ class AdminUserController extends Controller
         VendorOutlet::create([
             'user_id' => $selectedUser->id,
             'outlet_name' => $validated['outlet_name'],
-            'outlet_location' => $validated['outlet_location'],
+            'outlet_location' => $finalOutletLocation,
         ]);
 
         // it validates the form, changes selected consumer's role to 'vendor', and creates their row in vendor_outlets table
         return redirect()->route('admin.users')
             ->with('success', $selectedUser->name . ' has been approved as a vendor for ' . $validated['outlet_name'] . '.');
+    }
+
+    // this function is called when admin clicks "Revoke" button on a vendor row in admin/users.blade, referring to web.php PATCH (/admin/users/{user}/revoke-vendor)
+    // it removes the empty vendor_outlets row and reverts the user's role back to 'consumer'
+    public function revokeVendorAccess(User $user)
+    {
+        if ($user->role !== 'vendor') {
+            return back()->with('error', 'Only vendor accounts can have vendor access revoked.');
+        }
+
+        if ($user->vendorOutlet && $user->vendorOutlet->foodListings()->exists()) {
+            return back()->with('error', 'Cannot revoke vendor access because this outlet already has food listings or reservation history. Block the account instead.');
+        }
+
+        if ($user->vendorOutlet) {
+            $user->vendorOutlet->delete();
+        }
+
+        $user->update([
+            'role' => 'consumer',
+        ]);
+
+        return redirect()->route('admin.users')
+            ->with('success', 'Vendor access revoked for ' . $user->name . '. Account reverted to consumer.');
     }
 }

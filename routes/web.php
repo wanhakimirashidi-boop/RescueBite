@@ -101,6 +101,11 @@ Route::post('/admin/users/grant-vendor', [AdminUserController::class, 'grantVend
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.users.grant-vendor');
 
+// Admin routes - Revoke vendor access and revert user back to consumer
+Route::patch('/admin/users/{user}/revoke-vendor', [AdminUserController::class, 'revokeVendorAccess'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.users.revoke-vendor');
+
 // Admin routes - Reports and waste reduction export section
 Route::get('/admin/reports', [AdminReportController::class, 'reports'])
     ->middleware(['auth', 'verified', 'role:admin'])

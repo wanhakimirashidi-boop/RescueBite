@@ -608,6 +608,40 @@
     background: #15803d;
 }
 
+.admin-user-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.admin-action-vendor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #7230db;
+    color: #ffffff;
+}
+
+.admin-action-vendor:hover {
+    background: #5b21b6;
+}
+
+.admin-action-revoke {
+    background: #d97706;
+    color: #ffffff;
+}
+
+.admin-action-revoke:hover {
+    background: #b45309;
+}
+
+.admin-custom-location-field {
+    max-width: 360px;
+    margin-bottom: 18px;
+}
+
 .admin-form-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
