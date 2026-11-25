@@ -813,6 +813,324 @@
     }
 }
 
+/* Light card theme for Admin Users & Reports (matches Consumer & Vendor white cards) */
+.admin-light-card {
+    border: 1px solid #d8e1dc;
+    background: #ffffff;
+    color: #06131e;
+    box-shadow: 0 8px 22px rgba(6, 19, 30, 0.06);
+}
+
+.admin-light-card-green {
+    border-top: 4px solid #168b46;
+}
+
+.admin-light-card-purple {
+    border-top: 4px solid #7230db;
+}
+
+.admin-light-card .admin-card-header {
+    border-bottom-color: #cbd4cf;
+}
+
+.admin-card-header-split {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.admin-light-card .admin-card-header h2 {
+    color: #06131e;
+}
+
+.admin-light-card .admin-card-header p {
+    color: #64716b;
+}
+
+.admin-light-count-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 14px;
+    background: #dff8e8;
+    color: #08763b;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-light-card .admin-table-wrapper {
+    border: 1px solid #cbd4cf;
+    border-radius: 10px;
+}
+
+.admin-light-card .admin-table thead tr {
+    background: #e3e7e5;
+}
+
+.admin-light-card .admin-table th {
+    color: #1f2937;
+    border-bottom: 1px solid #bcc6c0;
+}
+
+.admin-light-card .admin-table td {
+    color: #1e293b;
+    border-bottom: 1px solid #d5ddd8;
+}
+
+.admin-light-card .admin-table tbody tr:hover {
+    background: #f3f6f4;
+}
+
+.admin-light-card .admin-cell-strong {
+    color: #06131e;
+}
+
+.admin-light-card .admin-user-outlet {
+    color: #64716b;
+}
+
+.admin-light-card .admin-cell-green {
+    color: #08763b;
+}
+
+.admin-light-card .admin-cell-red {
+    color: #b91c1c;
+}
+
+.admin-light-card .admin-cell-purple {
+    color: #6d28d9;
+}
+
+.admin-light-card .admin-statistic-pink {
+    color: #be185d;
+}
+
+.admin-light-card .admin-cell-muted,
+.admin-light-card .admin-empty-cell,
+.admin-light-card .admin-empty-note {
+    color: #64716b;
+}
+
+.admin-light-card .admin-form-field label {
+    color: #24332c;
+}
+
+.admin-light-card .admin-form-field input,
+.admin-light-card .admin-form-field select {
+    border: 1px solid #cfd9d4;
+    background: #f8fbf9;
+    color: #06131e;
+}
+
+.admin-light-card .admin-form-field input:focus,
+.admin-light-card .admin-form-field select:focus {
+    outline: 2px solid #8f3cf3;
+    outline-offset: 1px;
+}
+
+.admin-light-card .admin-field-error {
+    color: #b91c1c;
+}
+
+.admin-light-card .admin-pagination-bar {
+    border-top-color: #e4ece7;
+}
+
+.admin-light-card .admin-pagination-info {
+    color: #64716b;
+}
+
+.admin-light-card .admin-pagination-button,
+.admin-light-card .admin-pagination-page {
+    border-color: #d8e1dc;
+    background: #f4f7f5;
+    color: #24332c;
+}
+
+.admin-light-card .admin-pagination-button:hover,
+.admin-light-card .admin-pagination-page:hover {
+    background: #e4ece7;
+}
+
+.admin-light-card .admin-pagination-current {
+    border-color: #7230db;
+    background: #7230db;
+    color: #ffffff;
+}
+
+.admin-users-filter-bar {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr auto;
+    align-items: end;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #cbd4cf;
+    border-radius: 10px;
+    background: #eef1ef;
+}
+
+.admin-users-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-light-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid #cfd9d4;
+    border-radius: 8px;
+    background: #e7eeea;
+    color: #24332c;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.admin-light-reset-button:hover {
+    background: #d8e1dc;
+}
+
+.admin-green-submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 8px;
+    background: #168b46;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.admin-green-submit-button:hover {
+    background: #08763b;
+}
+
+.admin-light-card .admin-role-consumer {
+    background: #dff8e8;
+    color: #08763b;
+}
+
+.admin-light-card .admin-role-vendor {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.admin-light-card .admin-role-admin {
+    background: #efe6fd;
+    color: #6d28d9;
+}
+
+.admin-status-active-soft {
+    background: #dff8e8;
+    color: #08763b;
+}
+
+.admin-status-blocked-soft {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Soft colorful Report Preview styling inside white card */
+.admin-light-card .admin-report-preview {
+    border: 1px solid #dfd3f5;
+    background: #f8f5fe;
+}
+
+.admin-light-card .admin-report-preview-header h3 {
+    color: #06131e;
+}
+
+.admin-light-card .admin-report-preview-header span {
+    background: #efe6fd;
+    color: #6d28d9;
+}
+
+.admin-report-metric-green,
+.admin-report-metric-amber,
+.admin-report-metric-pink {
+    padding: 18px 14px;
+    border-radius: 10px;
+}
+
+.admin-report-metric-green {
+    border: 1px solid #bce8cd;
+    background: #eafaf0;
+}
+
+.admin-report-metric-green strong {
+    color: #08763b;
+}
+
+.admin-report-metric-green span {
+    color: #245b3b;
+}
+
+.admin-report-metric-amber {
+    border: 1px solid #f5d89e;
+    background: #fef7e8;
+}
+
+.admin-report-metric-amber strong {
+    color: #b45309;
+}
+
+.admin-report-metric-amber span {
+    color: #7c4a11;
+}
+
+.admin-report-metric-pink {
+    border: 1px solid #f4c6db;
+    background: #fdf2f7;
+}
+
+.admin-report-metric-pink strong {
+    color: #be185d;
+}
+
+.admin-report-metric-pink span {
+    color: #7d224c;
+}
+
+.admin-light-card .admin-report-waste-row {
+    border-top-color: #e4dbf6;
+    color: #4b5563;
+}
+
+@media (max-width: 960px) {
+    .admin-users-filter-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-users-search-field {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-card-header-split {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-users-filter-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-users-search-field {
+        grid-column: span 1;
+    }
+}
+
 /* Printable PDF-ready Waste Reduction Report styles (reports-print.blade.php) */
 .admin-print-page {
     margin: 0;

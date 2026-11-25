@@ -17,20 +17,99 @@
                 <p class="admin-error-message">{{ session('error') }}</p>
             @endif
 
-            <form class="admin-search-form" method="GET" action="{{ route('admin.users') }}">
-                <label class="screen-reader-only" for="admin-user-search">Search user</label>
-                <input id="admin-user-search" type="search" name="search" value="{{ $searchTerm }}" placeholder="Search user by name, email, or role">
-                <button class="admin-search-button" type="submit">Search</button>
-                @if ($searchTerm)
-                    <a class="admin-search-clear" href="{{ route('admin.users') }}">Clear</a>
-                @endif
-            </form>
-
-            <section class="admin-card admin-users-card" aria-labelledby="users-list-title">
-                <div class="admin-card-header">
-                    <h2 id="users-list-title">User Accounts</h2>
-                    <p>Manage registered consumers, vendors, and account access</p>
+            <section class="admin-card admin-light-card admin-users-card" aria-labelledby="users-list-title">
+                <div class="admin-card-header admin-card-header-split">
+                    <div>
+                        <h2 id="users-list-title">User Accounts</h2>
+                        <p>Manage registered consumers, vendors, and account access</p>
+                    </div>
+                    <span class="admin-light-count-badge">{{ $users->total() }} users</span>
                 </div>
+
+                <form class="admin-users-filter-bar" method="GET" action="{{ route('admin.users') }}">
+                    <div class="admin-form-field admin-users-search-field">
+                        <label for="admin-user-search">Search user</label>
+                        <input id="admin-user-search" type="search" name="search" value="{{ $searchTerm }}" placeholder="Name, email, or role">
+                    </div>
+
+                    <div class="admin-form-field">
+                        <label for="admin-user-role">Role</label>
+                        <select id="admin-user-role" name="role">
+                            <option value="">All roles</option>
+                            @if ($selectedRole === 'consumer')
+                                <option value="consumer" selected>Consumer</option>
+                            @else
+                                <option value="consumer">Consumer</option>
+                            @endif
+
+                            @if ($selectedRole === 'vendor')
+                                <option value="vendor" selected>Vendor</option>
+                            @else
+                                <option value="vendor">Vendor</option>
+                            @endif
+
+                            @if ($selectedRole === 'admin')
+                                <option value="admin" selected>Admin</option>
+                            @else
+                                <option value="admin">Admin</option>
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="admin-form-field">
+                        <label for="admin-user-status">Status</label>
+                        <select id="admin-user-status" name="status">
+                            <option value="">All statuses</option>
+                            @if ($selectedStatus === 'active')
+                                <option value="active" selected>Active</option>
+                            @else
+                                <option value="active">Active</option>
+                            @endif
+
+                            @if ($selectedStatus === 'blocked')
+                                <option value="blocked" selected>Blocked</option>
+                            @else
+                                <option value="blocked">Blocked</option>
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="admin-form-field">
+                        <label for="admin-user-sort">Sort by</label>
+                        <select id="admin-user-sort" name="sort">
+                            @if ($selectedSort === 'name_asc')
+                                <option value="name_asc" selected>User (A - Z)</option>
+                            @else
+                                <option value="name_asc">User (A - Z)</option>
+                            @endif
+
+                            @if ($selectedSort === 'name_desc')
+                                <option value="name_desc" selected>User (Z - A)</option>
+                            @else
+                                <option value="name_desc">User (Z - A)</option>
+                            @endif
+
+                            @if ($selectedSort === 'latest')
+                                <option value="latest" selected>Latest joined</option>
+                            @else
+                                <option value="latest">Latest joined</option>
+                            @endif
+
+                            @if ($selectedSort === 'oldest')
+                                <option value="oldest" selected>Oldest joined</option>
+                            @else
+                                <option value="oldest">Oldest joined</option>
+                            @endif
+                        </select>
+                    </div>
+
+                    <div class="admin-users-filter-actions">
+                        <button class="admin-submit-button" type="submit">Apply</button>
+                        @if ($searchTerm || $selectedRole || $selectedStatus || $selectedSort !== 'name_asc')
+                            <a class="admin-light-reset-button" href="{{ route('admin.users') }}">Reset</a>
+                        @endif
+                    </div>
+                </form>
 
                 <div class="admin-table-wrapper">
                     <table class="admin-table">
@@ -65,9 +144,9 @@
                                     </td>
                                     <td class="admin-cell-center">
                                         @if ($user->is_blocked)
-                                            <span class="admin-status-badge admin-status-expired">Blocked</span>
+                                            <span class="admin-status-badge admin-status-blocked-soft">Blocked</span>
                                         @else
-                                            <span class="admin-status-badge admin-status-active">Active</span>
+                                            <span class="admin-status-badge admin-status-active-soft">Active</span>
                                         @endif
                                     </td>
                                     <td class="admin-cell-center">
@@ -98,7 +177,7 @@
                 @include('admin.partials.pagination', ['records' => $users, 'paginationLabel' => 'Users pages'])
             </section>
 
-            <section class="admin-card" aria-labelledby="grant-vendor-title">
+            <section class="admin-card admin-light-card admin-light-card-green" aria-labelledby="grant-vendor-title">
                 <div class="admin-card-header">
                     <h2 id="grant-vendor-title">Grant Vendor Access</h2>
                     <p>Approve a consumer account and assign one vendor outlet</p>
@@ -143,7 +222,7 @@
                             </div>
                         </div>
 
-                        <button class="admin-submit-button" type="submit">Approve as Vendor</button>
+                        <button class="admin-green-submit-button" type="submit">Approve as Vendor</button>
                     </form>
                 @else
                     <p class="admin-empty-note">There are no active consumer accounts waiting for vendor assignment right now.</p>

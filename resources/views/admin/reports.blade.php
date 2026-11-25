@@ -9,7 +9,7 @@
 
     <section class="admin-tab-section">
         <div class="container">
-            <section class="admin-card admin-report-card" aria-labelledby="waste-report-title">
+            <section class="admin-card admin-light-card admin-light-card-purple admin-report-card" aria-labelledby="waste-report-title">
                 <div class="admin-card-header">
                     <h2 id="waste-report-title">Generate Waste Reduction Report</h2>
                     <p>Filter rescued items, waste totals, and savings by date range or specific outlet</p>
@@ -52,7 +52,7 @@
                     <div class="admin-report-filter-actions">
                         <button class="admin-submit-button" type="submit">Update Preview</button>
                         @if ($fromDate || $toDate || $selectedOutletId)
-                            <a class="admin-secondary-button" href="{{ route('admin.reports') }}">Reset Filters</a>
+                            <a class="admin-light-reset-button" href="{{ route('admin.reports') }}">Reset Filters</a>
                         @endif
                     </div>
                 </form>
@@ -64,16 +64,16 @@
                     </div>
 
                     <div class="admin-report-preview-grid">
-                        <article class="admin-report-metric">
-                            <strong class="admin-cell-green">{{ $reportData['itemsRescued'] }}</strong>
+                        <article class="admin-report-metric admin-report-metric-green">
+                            <strong>{{ $reportData['itemsRescued'] }}</strong>
                             <span>Items Rescued</span>
                         </article>
-                        <article class="admin-report-metric">
-                            <strong class="admin-cell-amber">{{ $reportData['activeVendorsCount'] }}</strong>
+                        <article class="admin-report-metric admin-report-metric-amber">
+                            <strong>{{ $reportData['activeVendorsCount'] }}</strong>
                             <span>Active Vendors</span>
                         </article>
-                        <article class="admin-report-metric">
-                            <strong class="admin-statistic-pink">RM {{ number_format($reportData['overallSavings'], 2) }}</strong>
+                        <article class="admin-report-metric admin-report-metric-pink">
+                            <strong>RM {{ number_format($reportData['overallSavings'], 2) }}</strong>
                             <span>Overall Savings</span>
                         </article>
                     </div>
@@ -87,11 +87,11 @@
 
                 <div class="admin-report-export-actions">
                     <a class="admin-submit-button" href="{{ route('admin.reports.print', ['from_date' => $fromDate, 'to_date' => $toDate, 'outlet_id' => $selectedOutletId]) }}" target="_blank">Export As PDF</a>
-                    <a class="admin-secondary-button" href="{{ route('admin.reports.export-csv', ['from_date' => $fromDate, 'to_date' => $toDate, 'outlet_id' => $selectedOutletId]) }}">Export As Excel</a>
+                    <a class="admin-green-submit-button" href="{{ route('admin.reports.export-csv', ['from_date' => $fromDate, 'to_date' => $toDate, 'outlet_id' => $selectedOutletId]) }}">Export As Excel</a>
                 </div>
             </section>
 
-            <section class="admin-card" aria-labelledby="outlet-savings-title">
+            <section class="admin-card admin-light-card admin-light-card-green" aria-labelledby="outlet-savings-title">
                 <div class="admin-card-header">
                     <h2 id="outlet-savings-title">Outlet Savings &amp; Waste Breakdown</h2>
                     <p>Detailed comparison for the selected date range and outlet</p>
