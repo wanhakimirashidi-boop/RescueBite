@@ -74,10 +74,23 @@ Route::post('/vendor/verify-code', [VendorController::class, 'verifyCode'])
 
 
 
-// Admin routes - Dashboard and analytics section
+// Admin routes - Dashboard (TOP CARDS) and analytics section (BOTTOM CARDS)
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.dashboard');
+
+// Admin routes - Users management section
+Route::get('/admin/users', [AdminController::class, 'users'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.users');
+
+Route::patch('/admin/users/{user}/toggle-block', [AdminController::class, 'toggleUserBlock'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.users.toggle-block');
+
+Route::post('/admin/users/grant-vendor', [AdminController::class, 'grantVendorAccess'])
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.users.grant-vendor');
 
 
 

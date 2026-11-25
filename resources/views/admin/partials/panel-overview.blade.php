@@ -26,6 +26,7 @@
             <article class="admin-statistic">
                 <span>Active Listing</span>
                 <strong class="admin-statistic-amber">{{ $summaryStatistics['activeListingCount'] }}</strong>
+                <small>(Excluding expired listings)</small>
             </article>
             <article class="admin-statistic">
                 <span>Total Savings</span>
@@ -35,13 +36,19 @@
         </div>
 
         <nav class="admin-tabs" aria-label="Admin panel sections">
+            {{-- if button already active, change color. Else remain --}}
             @if ($currentTab === 'analytics')
                 <a class="admin-tab admin-tab-active" href="{{ route('admin.dashboard') }}">Analytics</a>
             @else
                 <a class="admin-tab" href="{{ route('admin.dashboard') }}">Analytics</a>
             @endif
 
-            <span class="admin-tab admin-tab-disabled" title="Coming in next step">Users</span>
+            @if ($currentTab === 'users')
+                <a class="admin-tab admin-tab-active" href="{{ route('admin.users') }}">Users</a>
+            @else
+                <a class="admin-tab" href="{{ route('admin.users') }}">Users</a>
+            @endif
+
             <span class="admin-tab admin-tab-disabled" title="Coming in next step">Reports</span>
         </nav>
     </div>

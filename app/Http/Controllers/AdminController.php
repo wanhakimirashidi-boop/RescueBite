@@ -6,6 +6,7 @@ use App\Models\FoodListing;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\VendorOutlet;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -28,12 +29,107 @@ class AdminController extends Controller
         ]);
     }
 
+    // START OF ADMIN USERS SECTION
+    // Connected view: admin/users.blade.php
+    public function users()
+    {
+        $summaryStatistics = $this->getSummaryStatistics();         // getSummaryStatistics() from function below
+        $searchTerm = request('search');                            // search from "name=search" in admin/users.blade.php
+
+        // specifically for admin/users.blade (line 52). bcs we need user to hold vendorOutlet if they have one for that blade section
+        $userQuery = User::with('vendorOutlet')                     // with('vendorOutlet') = after finding all users, also show their vendorOutlet (Vendor only) IF they have one
+            ->orderBy('name');
+
+        // % for similarity search, like a "contains" search
+        if ($searchTerm) {
+            $userQuery->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('role', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // withQueryString() = RUNS the searched sql query 
+        $users = $userQuery->paginate(10)->withQueryString();
+
+        // Active consumer accounts eligible to be approved as vendors with an assigned outlet.
+        $consumerUsers = User::where('role', 'consumer')
+            ->where('is_blocked', false)
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.users', [
+            'summaryStatistics' => $summaryStatistics,
+            'users' => $users,
+            'consumerUsers' => $consumerUsers,
+            'searchTerm' => $searchTerm,
+        ]);
+    }
+
+    // Blocks or unblocks a consumer or vendor account from the Admin Users table.
+    public function toggleUserBlock(User $user)
+    {
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Admin accounts cannot be blocked.');
+        }
+
+        $newBlockedStatus = !$user->is_blocked;
+
+        $user->update([
+            'is_blocked' => $newBlockedStatus,
+        ]);
+
+        if ($newBlockedStatus) {
+            return redirect()->route('admin.users')->with('success', $user->name . ' has been blocked.');
+        }
+
+        return redirect()->route('admin.users')->with('success', $user->name . ' has been unblocked.');
+    }
+
+    // Promotes a consumer account to vendor and assigns one vendor outlet.
+    public function grantVendorAccess(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => ['required', 'exists:users,id'],
+            'outlet_name' => ['required', 'string', 'max:255'],
+            'outlet_location' => ['required', 'string', 'max:255'],
+        ]);
+
+        $selectedUser = User::findOrFail($validated['user_id']);
+
+        if ($selectedUser->role !== 'consumer') {
+            return back()->withInput()->with('error', 'Only consumer accounts can be upgraded to a vendor.');
+        }
+
+        if ($selectedUser->vendorOutlet) {
+            return back()->withInput()->with('error', 'This user already manages a vendor outlet.');
+        }
+
+        $selectedUser->update([
+            'role' => 'vendor',
+        ]);
+
+        VendorOutlet::create([
+            'user_id' => $selectedUser->id,
+            'outlet_name' => $validated['outlet_name'],
+            'outlet_location' => $validated['outlet_location'],
+        ]);
+
+        return redirect()->route('admin.users')
+            ->with('success', $selectedUser->name . ' has been approved as a vendor for ' . $validated['outlet_name'] . '.');
+    }
+    // END OF ADMIN USERS SECTION
+
+    // START OF ADMIN DASHBOARD SECTION
     // 4 Cards at very top (Total Users, Food Rescued, Active Listing, Total Savings).
     private function getSummaryStatistics()
     {
         // count total USERS (excluding admin)
-        $consumerCount = User::where('role', 'consumer')->count();
-        $vendorCount = User::where('role', 'vendor')->count();
+        $consumerCount = User::where('role', 'consumer')
+            ->count();
+        $vendorCount = User::where('role', 'vendor')
+            ->count();
+
         $totalUsers = $consumerCount + $vendorCount;
 
         // count total number of CLAIMED reservations & calculate TOTAL SAVINGS from claimed reservations
@@ -74,7 +170,9 @@ class AdminController extends Controller
             'totalSavings' => $totalSavings,
         ];
     }
+    // END OF ADMIN DASHBOARD SECTION
 
+    // START OF ADMIN ANALYTICS SECTION
     // Summarizes how many listings each vendor outlet has created, how many are still in stock, and how many are sold out/ended
     private function getVendorBreakdown()
     {
@@ -206,3 +304,4 @@ class AdminController extends Controller
         return 'admin-category-tile-default';
     }
 }
+// END OF ADMIN ANALYTICS SECTION
