@@ -23,10 +23,11 @@ class AdminReportController extends Controller
     public function reports(Request $request)   // Request $request = to get the filter inputs from admin/reports.blade (from_date, to_date, outlet_id)
     {
         $summaryStatistics = $this->adminSummaryService->getSummaryStatistics();
-        $vendorOutlets = VendorOutlet::orderBy('outlet_name')->get();
+        $vendorOutlets = VendorOutlet::orderByRaw('LOWER(outlet_name) ASC')->get(); // to view the dropdown in alphatical order
         $reportData = $this->buildReportData($request);
 
         return view('admin.reports', [
+            // left 'vendorOutlets' is the same variable mentioned in reports.blade || right side $vendorOutlets is from controller variable
             'summaryStatistics' => $summaryStatistics,
             'vendorOutlets' => $vendorOutlets,
             'reportData' => $reportData,
@@ -66,13 +67,18 @@ class AdminReportController extends Controller
         return response()->streamDownload(function () use ($reportData, $fromDateLabel, $toDateLabel) {
             $fileHandle = fopen('php://output', 'w');
 
-            fputcsv($fileHandle, ['RescueBite Waste Reduction Report']);
+            // UTF-8 BOM ensures Microsoft Excel opens symbols and formatting cleanly
+            fwrite($fileHandle, "\xEF\xBB\xBF");
+
+            fputcsv($fileHandle, ['RESCUEBITE - WASTE REDUCTION REPORT']);
+            fputcsv($fileHandle, ['Generated At', now()->format('d M Y, g:i A')]);
             fputcsv($fileHandle, ['Outlet Filter', $reportData['selectedOutletName']]);
             fputcsv($fileHandle, ['From Date', $fromDateLabel]);
             fputcsv($fileHandle, ['To Date', $toDateLabel]);
             fputcsv($fileHandle, []);
 
-            fputcsv($fileHandle, ['Summary Metric', 'Value']);
+            fputcsv($fileHandle, ['SUMMARY METRICS']);
+            fputcsv($fileHandle, ['Metric', 'Value']);
             fputcsv($fileHandle, ['Items Rescued (Claimed)', $reportData['itemsRescued']]);
             fputcsv($fileHandle, ['Active Vendors', $reportData['activeVendorsCount']]);
             fputcsv($fileHandle, ['Overall Savings (RM)', number_format($reportData['overallSavings'], 2, '.', '')]);
@@ -81,6 +87,7 @@ class AdminReportController extends Controller
             fputcsv($fileHandle, ['Unsold Food Wasted (Qty)', $reportData['unsoldFoodWasted']]);
             fputcsv($fileHandle, []);
 
+            fputcsv($fileHandle, ['OUTLET BREAKDOWN']);
             fputcsv($fileHandle, ['Outlet', 'Location', 'Items Rescued', 'Expired Reservations', 'Unsold Food Wasted', 'Rescue Rate (%)', 'Recovered Revenue (RM)', 'Total Savings (RM)']);
 
             foreach ($reportData['outletBreakdown'] as $outletRow) {
@@ -96,9 +103,20 @@ class AdminReportController extends Controller
                 ]);
             }
 
+            fputcsv($fileHandle, [
+                'TOTAL',
+                $reportData['selectedOutletName'],
+                $reportData['itemsRescued'],
+                $reportData['expiredReservationsCount'],
+                $reportData['unsoldFoodWasted'],
+                '-',
+                number_format($reportData['overallRevenue'], 2, '.', ''),
+                number_format($reportData['overallSavings'], 2, '.', ''),
+            ]);
+
             fclose($fileHandle);
         }, 'rescuebite-waste-report.csv', [
-            'Content-Type' => 'text/csv',
+            'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
 
@@ -116,8 +134,9 @@ class AdminReportController extends Controller
         $toDate = $request->input('to_date');
         $selectedOutletId = $request->input('outlet_id');
 
-        $outletQuery = VendorOutlet::orderBy('outlet_name');
+        $outletQuery = VendorOutlet::orderByRaw('LOWER(outlet_name) ASC');
 
+        // FOR "OUTLET" ATTRIBUTE FILTER
         if ($selectedOutletId) {
             $outletQuery->where('id', $selectedOutletId);
         }

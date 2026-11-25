@@ -37,7 +37,8 @@
                         <div class="admin-form-field">
                             <label for="outlet_id">Vendor Outlet</label>
                             <select id="outlet_id" name="outlet_id">
-                                <option value="">All outlets</option>
+                                <option value="">All outlets</option>   
+                                {{--DROP DOWN--}}
                                 @foreach ($vendorOutlets as $vendorOutlet)
                                     @if ($selectedOutletId == $vendorOutlet->id)
                                         <option value="{{ $vendorOutlet->id }}" selected>{{ $vendorOutlet->outlet_name }}</option>
@@ -85,9 +86,15 @@
                     </div>
                 </div>
 
-                <div class="admin-report-export-actions">
-                    <a class="admin-submit-button" href="{{ route('admin.reports.print', ['from_date' => $fromDate, 'to_date' => $toDate, 'outlet_id' => $selectedOutletId]) }}" target="_blank">Export As PDF</a>
-                    <a class="admin-green-submit-button" href="{{ route('admin.reports.export-csv', ['from_date' => $fromDate, 'to_date' => $toDate, 'outlet_id' => $selectedOutletId]) }}">Export As Excel</a>
+                <div class="admin-report-export-bar">
+                    <div class="admin-report-export-info">
+                        <strong>Export Report</strong>
+                        <span>Download or print the current filtered report</span>
+                    </div>
+                    <div class="admin-report-export-actions">
+                        <a class="admin-submit-button" href="{{ route('admin.reports.print', ['from_date' => $fromDate, 'to_date' => $toDate, 'outlet_id' => $selectedOutletId]) }}" target="_blank">Export As PDF</a>
+                        <a class="admin-green-submit-button" href="{{ route('admin.reports.export-csv', ['from_date' => $fromDate, 'to_date' => $toDate, 'outlet_id' => $selectedOutletId]) }}">Export As Excel</a>
+                    </div>
                 </div>
             </section>
 

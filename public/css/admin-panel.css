@@ -1140,6 +1140,33 @@
     color: #4b5563;
 }
 
+.admin-report-export-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid #cbd4cf;
+    border-radius: 10px;
+    background: #eef1ef;
+}
+
+.admin-report-export-info strong {
+    display: block;
+    color: #06131e;
+    font-size: 14px;
+}
+
+.admin-report-export-info span {
+    color: #64716b;
+    font-size: 12px;
+}
+
+.admin-report-export-bar .admin-report-export-actions {
+    justify-content: flex-end;
+}
+
 @media (max-width: 960px) {
     .admin-users-filter-bar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1168,15 +1195,22 @@
 /* Printable PDF-ready Waste Reduction Report styles (reports-print.blade.php) */
 .admin-print-page {
     margin: 0;
-    padding: 32px;
-    background: #ffffff;
+    padding: 36px 24px;
+    background: #f4f7f5;
     color: #111827;
     font-family: Arial, Helvetica, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 .admin-print-sheet {
     max-width: 960px;
     margin: 0 auto;
+    padding: 32px;
+    border: 1px solid #d8e1dc;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 10px 26px rgba(6, 19, 30, 0.08);
 }
 
 .admin-print-header {
@@ -1184,21 +1218,52 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding-bottom: 16px;
-    margin-bottom: 24px;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
     border-bottom: 2px solid #073d28;
 }
 
-.admin-print-header h1 {
-    margin: 0 0 6px;
-    font-size: 26px;
-    color: #073d28;
+.admin-print-brand-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.admin-print-meta {
+.admin-print-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.admin-print-eyebrow {
+    margin: 0 0 3px;
+    color: #08763b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.admin-print-header h1 {
     margin: 0;
-    color: #4b5563;
-    font-size: 13px;
+    font-size: 24px;
+    color: #06131e;
+}
+
+.admin-print-meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.admin-print-pill {
+    padding: 6px 12px;
+    border: 1px solid #d5ddd8;
+    border-radius: 16px;
+    background: #f4f7f5;
+    color: #374151;
+    font-size: 12px;
 }
 
 .admin-print-actions {
@@ -1210,7 +1275,7 @@
 .admin-print-back-button {
     padding: 9px 16px;
     border: 0;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -1231,49 +1296,87 @@
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 12px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .admin-print-summary-box {
-    padding: 14px;
-    border: 1px solid #d1d5db;
+    padding: 14px 10px;
+    border: 1px solid #d5ddd8;
+    border-top: 3px solid #073d28;
     border-radius: 8px;
+    background: #f9fbfa;
     text-align: center;
+}
+
+.admin-print-box-green {
+    border-top-color: #168b46;
+}
+
+.admin-print-box-amber {
+    border-top-color: #d97706;
+}
+
+.admin-print-box-pink {
+    border-top-color: #be185d;
+}
+
+.admin-print-box-red {
+    border-top-color: #dc2626;
 }
 
 .admin-print-summary-box span {
     display: block;
     margin-bottom: 6px;
     color: #4b5563;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
 }
 
 .admin-print-summary-box strong {
-    font-size: 18px;
+    color: #06131e;
+    font-size: 17px;
 }
 
 .admin-print-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .admin-print-table th,
 .admin-print-table td {
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
+    padding: 10px 10px;
+    border: 1px solid #cfd8d3;
     text-align: left;
 }
 
-.admin-print-table th {
-    background: #f3f4f6;
+.admin-print-table thead th {
+    background: #e3e7e5;
+    color: #1f2937;
     font-size: 11px;
     text-transform: uppercase;
 }
 
+.admin-print-table tbody tr:nth-child(even) {
+    background: #f8faf9;
+}
+
+.admin-print-table tfoot td {
+    background: #eef4f0;
+    color: #06131e;
+}
+
 .admin-print-table .admin-cell-center {
+    text-align: center;
+}
+
+.admin-print-footer {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+    font-size: 11px;
     text-align: center;
 }
 
@@ -1284,5 +1387,12 @@
 
     .admin-print-page {
         padding: 0;
+        background: #ffffff;
+    }
+
+    .admin-print-sheet {
+        padding: 0;
+        border: 0;
+        box-shadow: none;
     }
 }
