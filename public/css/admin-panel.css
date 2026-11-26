@@ -929,6 +929,10 @@
     color: #08763b;
 }
 
+.admin-light-card .admin-cell-amber {
+    color: #b45309;
+}
+
 .admin-light-card .admin-cell-red {
     color: #b91c1c;
 }
@@ -939,6 +943,47 @@
 
 .admin-light-card .admin-statistic-pink {
     color: #be185d;
+}
+
+.admin-light-card .admin-waste-metric {
+    border: 1px solid #d5ddd8;
+    border-top: 3px solid #94a3b8;
+    background: #f4f7f5;
+}
+
+.admin-light-card .admin-waste-metric-green {
+    border-top-color: #168b46;
+}
+
+.admin-light-card .admin-waste-metric-amber {
+    border-top-color: #d97706;
+}
+
+.admin-light-card .admin-waste-metric-red {
+    border-top-color: #dc2626;
+}
+
+.admin-light-card .admin-waste-metric-purple {
+    border-top-color: #7230db;
+}
+
+.admin-light-card .admin-waste-metric span {
+    color: #4b5563;
+}
+
+.admin-light-card .admin-status-active {
+    background: #dff8e8;
+    color: #08763b;
+}
+
+.admin-light-card .admin-status-claimed {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.admin-light-card .admin-status-expired {
+    background: #fee2e2;
+    color: #b91c1c;
 }
 
 .admin-light-card .admin-cell-muted,

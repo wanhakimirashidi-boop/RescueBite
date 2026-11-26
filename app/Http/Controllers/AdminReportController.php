@@ -136,7 +136,6 @@ class AdminReportController extends Controller
 
         $outletQuery = VendorOutlet::orderByRaw('LOWER(outlet_name) ASC');
 
-        // FOR "OUTLET" ATTRIBUTE FILTER
         if ($selectedOutletId) {
             $outletQuery->where('id', $selectedOutletId);
         }

@@ -10,7 +10,7 @@
     <section class="admin-tab-section">
         <div class="container">
             <div class="admin-analytics-grid">
-                <section class="admin-card" aria-labelledby="vendor-breakdown-title">
+                <section class="admin-card admin-light-card admin-light-card-purple" aria-labelledby="vendor-breakdown-title">
                     <div class="admin-card-header">
                         <h2 id="vendor-breakdown-title">Vendor Breakdown</h2>
                         <p>Total listings per vendor</p>
@@ -47,7 +47,7 @@
                     @include('admin.partials.pagination', ['records' => $vendorBreakdown, 'paginationLabel' => 'Vendor breakdown pages'])
                 </section>
 
-                <section class="admin-card" aria-labelledby="category-breakdown-title">
+                <section class="admin-card admin-light-card admin-light-card-green" aria-labelledby="category-breakdown-title">
                     <div class="admin-card-header">
                         <h2 id="category-breakdown-title">Category Breakdown</h2>
                         <p>Food count by category</p>
@@ -69,37 +69,37 @@
                 </section>
             </div>
 
-            <section class="admin-card admin-waste-card" aria-labelledby="waste-analytics-title">
+            <section class="admin-card admin-light-card admin-waste-card" aria-labelledby="waste-analytics-title">
                 <div class="admin-card-header">
                     <h2 id="waste-analytics-title">Waste &amp; Rescue Analytics</h2>
                     <p>Claimed, unclaimed, and expired overview</p>
                 </div>
 
                 <div class="admin-waste-grid">
-                    <article class="admin-waste-metric">
+                    <article class="admin-waste-metric admin-waste-metric-green">
                         <span>Claimed Rescues</span>
                         <strong class="admin-cell-green">{{ $wasteAnalytics['claimedCount'] }}</strong>
                     </article>
-                    <article class="admin-waste-metric">
+                    <article class="admin-waste-metric admin-waste-metric-amber">
                         <span>Unclaimed (Reserved)</span>
                         <strong class="admin-cell-amber">{{ $wasteAnalytics['unclaimedCount'] }}</strong>
                     </article>
-                    <article class="admin-waste-metric">
+                    <article class="admin-waste-metric admin-waste-metric-red">
                         <span>Expired Reservations</span>
                         <strong class="admin-cell-red">{{ $wasteAnalytics['expiredReservationCount'] }}</strong>
                     </article>
-                    <article class="admin-waste-metric">
+                    <article class="admin-waste-metric admin-waste-metric-red">
                         <span>Unsold Food Wasted</span>
                         <strong class="admin-cell-red">{{ $wasteAnalytics['expiredQuantityLeft'] }}</strong>
                     </article>
-                    <article class="admin-waste-metric">
+                    <article class="admin-waste-metric admin-waste-metric-purple">
                         <span>Pickup Completion</span>
                         <strong class="admin-cell-purple">{{ $wasteAnalytics['rescueRate'] }}%</strong>
                     </article>
                 </div>
             </section>
 
-            <section class="admin-card" aria-labelledby="recent-reservations-title">
+            <section class="admin-card admin-light-card admin-light-card-purple" aria-labelledby="recent-reservations-title">
                 <div class="admin-card-header">
                     <h2 id="recent-reservations-title">Recent Reservations</h2>
                     <p>Latest consumer pickup activity</p>
